@@ -1,5 +1,8 @@
-# import MySQLdb as db
+import MySQLdb as db
 from flask import Flask, render_template
+from query_tools import *
+from query_api import *
+import logging
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 
 
@@ -15,6 +18,17 @@ app = Flask(__name__,  template_folder='client', static_folder='client/static')
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    data = request.get_json()
+    url = data.get('url')
+    logging.info(url)
+    if url:
+        return search_query(url)
+    else:
+        return "error"
+
 
 if __name__ == '__main__':
     app.run()

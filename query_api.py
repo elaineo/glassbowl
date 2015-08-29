@@ -9,7 +9,7 @@ def search_query(url):
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
-    idx = [sims[s][0] for s in [0:10]]
+    idx = [sims[s][0] for s in range[0:10]]
 
     results = pull_linkedidx(idx)
 
@@ -21,7 +21,8 @@ def pull_linkedidx(indices):
         results = []
         for idx in indices:
             query = "select company, title from linkedin where id = %s" % idx
-            res = cur.execute(query)
-            results.append(res.fetch())
+            cur.execute(query)
+            res = cur.fetchone()
+            results.append(res.fetchone())
     conn.close()
     return results

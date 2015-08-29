@@ -2,6 +2,7 @@ import gensim
 from gensim import corpora, models, similarities
 import nltk
 import json
+import os
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_DATA = os.path.join(APP_ROOT, 'data')
@@ -73,7 +74,7 @@ def preprocess(name, num_topics=512):
     corpora.MmCorpus.serialize('%s.mm' % name, corpus)
     corpus = corpora.MmCorpus('%s.mm' % name)
 
-    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics)
+    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=num_topics)
     lsi.save('%s-corpus.lsi' % name)
 
     index = similarities.Similarity('%s.index' % name, lsi[corpus], 
