@@ -327,14 +327,15 @@ $(document).ready(function () {
             contentType: "json/application",
             data: jdata,
             crossDomain: true,
-            success:    function (json) {
-                    $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + json.min_salary+" | <b>max</b>:"+json.max_salary+" | <b>average</b>:"+json.ave_salary+"</p>");
+            success:    function (res) {
+                    $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + res.min_salary+" | <b>max</b>:"+res.max_salary+" | <b>average</b>:"+res.ave_salary+"</p>");
                     $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-                    console.log(json);
-                        for (var i = 0; i < json.links.length; i++) {
-                            $("#stage").append("<tr class = 'danger'>" +
-                                "<td>" + json.links[i].link.Title +"</td><td>" + json.links[i].link.Company+
-                                "</td><td>" + json.links[i].link.salary + "</td></tr>")
+
+                    json = res.jobs;
+                        for (var i = 0; i < json.length; i++) {
+                            $("#stage").append("<tr>",
+                                "<td>" + json[i].Title, "<td>" + json[i].Company,
+                                "<td>" + json[i].Salary)
                         };
                         // $("#stage").css({
                         //     'background-color':'red'}

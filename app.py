@@ -1,34 +1,11 @@
-# import MySQLdb as db
 from flask import Flask, render_template, request
-# from query_tools import *
-# from query_api import *
+from query_tools import *
+from query_api import *
 import logging,logging.config, yaml
 logging.config.dictConfig(yaml.load(open('logging.conf')))
 
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 import json
-
-fakesalary = {
-  "links": [
-    {"link": {
-    "Title": "Software Engineer",
-    "Company":"Google",
-    "salary":"$17,500"
-  }},{"link": {
-    "Title": "Software Developer",
-    "Company":"Cisco",
-    "salary":"$14,500"
-  }},
-    {"link": {
-    "Title": "Software Developer",
-    "Company":"Wells Fargo",
-    "salary":"$11,500"
-  }}
-  ],
-  "min_salary": "$11,500",
-  "max_salary": "$17,500",
-  "ave_salary": "$14,500"
-}
 
 fakepeers={
   "links": [
@@ -64,19 +41,17 @@ def home():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    # data = request.data
-    # data = json.loads(data)
-    # url = data.get('url')
-    # logconsole.debug(url)
-    # if url:
-    #     return search_query(url)
-    # else:
-    #     return "error"
-    return json.dumps(fakesalary)
-
-@app.route('/searchpeople', methods=['GET', 'POST'])
-def searchpeople():
-    return json.dumps(fakepeers)
+    data = request.data
+    data = json.loads(data)
+    url = data.get('url')
+    logconsole.debug(url)
+    if url:
+        r = search_query(url)
+        logconsole.debug(r)
+        return json.dumps(r)
+    else:
+        return "error"
+    
 
 if __name__ == '__main__':
     logfile    = logging.getLogger('file')

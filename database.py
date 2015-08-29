@@ -19,8 +19,21 @@ def getInfo(index):
 	dict["Company"] = data[0]
 	dict["Title"]=data[1]
 	dict["Salary"] = data[2]
-        return dict
+    return dict
 
+def getSalary(dict_list):
+	dict_out_list = []
+	for dict in dict_list:
+		dict_out ={}
+		company = dict["Company"]
+		title = dict["Title"]
+		cur.execute("SELECT Company,Title,Salary FROM Salaries WHERE Company=%s AND Title=%s", (company, title))
+		data = cur.fetchone()
+		dict_out["Company"] = data[0]	
+		dict_out["Title"]=data[1]
+		dict_out["Salary"]=data[2]
+		dict_out_list.append(dict_out)
+        return dict_out_list
 
 db1 = mdb.connect(host="localhost",user="root", db="mydata")
 cur = db1.cursor()
@@ -40,9 +53,10 @@ with db1:
 	for title in all_titles:
 	    	print title
 	    	record = titles[title]
-		title = title.encode('latin-1', errors='replace')
+		#title = title.encode('latin-1', errors='replace')
 		cur.execute("INSERT INTO Salaries(Company, Title, Salary) VALUES(%s, %s, %s)", (company_name, title.replace("/", "-"), record["max"]))
 
 #dict = getInfo("1")
 #print dict["Company"]
 #print dict["Title"]
+print getSalary([{"Company":"Oracle", "Title":"Senior Sales Executive"},{"Company":"Fujitsu", "Title":"Accountant III"}])

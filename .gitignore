@@ -55,3 +55,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.lsi.projection
+*.lsi.projection.u.npy

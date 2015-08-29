@@ -92,6 +92,8 @@ def preprocess(name, num_topics=512):
 
 class LinkedCorpus(object):
      def __iter__(self):
+        name='linkedin'
+        dictionary = corpora.Dictionary.load('%s.dict' % name)
         for f in filelist:
             with open(f, 'r') as openf:
                 x = json.load(openf)
