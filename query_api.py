@@ -5,6 +5,8 @@ import os
 import json
 from minidb import getSalary
 from bs4 import BeautifulSoup
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US')
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_DATA = os.path.join(APP_ROOT, 'data')
@@ -31,9 +33,9 @@ def search_query(url):
     min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
     results = {}
     results['jobs'] = jobs
-    results['max_salary'] = max_sal
-    results['min_salary'] = min_sal
-    results['ave_salary'] = avg_sal
+    results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True) 
+    results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True) 
+    results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True) 
     return results
 
 def calc_salary(salarylist):
