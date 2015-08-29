@@ -7,28 +7,6 @@ logging.config.dictConfig(yaml.load(open('logging.conf')))
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 import json
 
-fakesalary = {
-  "links": [
-    {"link": {
-    "Title": "Software Engineer",
-    "Company":"Google",
-    "salary":"$17,500"
-  }},{"link": {
-    "Title": "Software Developer",
-    "Company":"Cisco",
-    "salary":"$14,500"
-  }},
-    {"link": {
-    "Title": "Software Developer",
-    "Company":"Wells Fargo",
-    "salary":"$11,500"
-  }}
-  ],
-  "min_salary": "$11,500",
-  "max_salary": "$17,500",
-  "ave_salary": "$14,500"
-}
-
 fakepeers={
   "links": [
     {"link": {
@@ -70,9 +48,10 @@ def search():
     if url:
         r = search_query(url)
         logconsole.debug(r)
+        return json.dumps(r)
     else:
         return "error"
-    return json.dumps(temp)
+    
 
 if __name__ == '__main__':
     logfile    = logging.getLogger('file')

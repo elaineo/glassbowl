@@ -3,6 +3,7 @@ from query_tools import *
 import requests
 import os
 import json
+from minidb import getSalary
 from bs4 import BeautifulSoup
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
@@ -22,9 +23,30 @@ def search_query(url):
     idx = [sims[s][0] for s in range(0,10)]
 
     results = index_lookup(idx)
+    rtokens = [r.split('/') for r in results]
     #results = pull_linkedidx(idx)
+
+    clean_res = [{'Company':r[2],'Title':r[3].split('.')[0]} for r in rtokens]
+    jobs = getSalary(clean_res)
+    min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
+    results = {}
+    results['jobs'] = jobs
+    results['max_salary'] = max_sal
+    results['min_salary'] = min_sal
+    results['ave_salary'] = avg_sal
     return results
 
+def calc_salary(salarylist):
+    total = len(salarylist)
+    numlist = []
+    for s in salarylist:
+        num = s.replace('$','')
+        num = num.replace('k', '000')
+        numlist.append(int(num))
+    min_sal = min(numlist)
+    max_sal = max(numlist)
+    avg_sal = sum(numlist)/total
+    return min_sal, max_sal, avg_sal
 
 def index_lookup(indices):
     name = 'linkedin'
