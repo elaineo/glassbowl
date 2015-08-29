@@ -28,10 +28,10 @@ def search_query(url):
 def index_lookup(indices):
     name = 'linkedin'
 
-    with open(os.path.join(APP_DATA, '%s-realidx.json' % name), 'r') as f:
+    with open(os.path.join(APP_ROOT, '%s-realidx.json' % name), 'r') as f:
         realidx = json.load(f)
     
-    with open(os.path.join(APP_DATA, '%s-files.json' % name), 'r') as f:
+    with open(os.path.join(APP_ROOT, '%s-files.json' % name), 'r') as f:
         filelist = json.load(f)
 
     r = [filelist[realidx[i]] for i in indices]
