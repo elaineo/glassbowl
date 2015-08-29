@@ -141,7 +141,6 @@
     <aside class="callout">
         <div class="text-vertical-center">
             <h3>Find out salary in your industry by log in through Linkedin</h3>
-
             <form method = "" action = "post">
                <input id="inputurl" type="text" name="linkedin_url" placeholder="LinkedIn Email">
                 <input type = "submit" value = "register" style ="color: teal; background-color: #FFFFC0;font-face: 'Comic Sans MS'; font-size: larger">
@@ -153,24 +152,16 @@
         </div>
     </aside>
 <!-- salary -->
-<style type="text/css">
-#salary{
-    background: url("static/img/salary.jpg")
-    height: 500px;
-}
-</style>
        <section id="services" class="services">
-
         <div class="container">
             <div class="text-center">
                 <div class="col-lg-10 col-lg-offset-1">
                   <h3>Your Peers Are Earning...</h3>
-          <!--           <div id = "ave_sal"></div>
-                   <table id = "stage">
+                    <div id = "ave_sal"></div>
+                   <table id = "stage" class = "table-striped">
 
-                   </table> -->
+                   </table>
                     <div>
-
 
                     </div>
                     <!-- /.row (nested) -->
@@ -181,24 +172,24 @@
         </div>
         <!-- /.container -->
     </section>
-
+<!-- peers -->
     <section id="services" class="services bg-primary">
 
         <div class="container">
             <div class="text-center">
                 <div class="col-lg-10 col-lg-offset-1">
                     <h2>People With Similar Job Title</h2>
-                    <div id = "ave_sal"></div>
-                   <table id = "stage">
+         <!--            <div id = "peer"></div> -->
+                   <table id = "peers">
 
                    </table>
                     <div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                          <!--       <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-cloud fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -206,10 +197,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                            <!--     <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-compass fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -217,10 +208,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                             <!--    <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-flask fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -228,10 +219,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                            <!--     <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-shield fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
                             </div>
@@ -339,13 +330,13 @@ $(document).ready(function () {
             data: jdata,
             crossDomain: true,
             success:    function (json) {
-                    $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+                    $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + json.min_salary+" | <b>max</b>:"+json.max_salary+" | <b>average</b>:"+json.ave_salary+"</p>");
                     $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
                     console.log(json);
                         for (var i = 0; i < json.links.length; i++) {
-                            $("#stage").append("<tr>",
-                                "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-                                "<td>" + json.links[i].link.Company)
+                            $("#stage").append("<tr class='danger'>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.Company,
+                                "<td>" + json.links[i].link.salary)
                         };
                         window.location.hash = "#stage";
                         $.ajax({
@@ -356,7 +347,11 @@ $(document).ready(function () {
                             data: jdata,
                             crossDomain: true,
                             success:    function (json) {
-                                $("")
+                            for (var i = 0; i < json.links.length; i++) {
+                            $("#people").append("<tr>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.img_url,
+                                "<td>" + json.links[i].link.profile_url)
+                        };
 
                             }
                         })
