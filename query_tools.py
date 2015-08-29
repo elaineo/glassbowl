@@ -40,6 +40,7 @@ def query_docs(texts, dictionary, lsi, index):
 def preprocess(name, num_topics=512):
     """ 
         Generate corpus, dictionary, lsi, index
+        this takes a long time to run
     """
 
     with open('%s-files.json' % name) as docs_file:
@@ -57,18 +58,16 @@ def preprocess(name, num_topics=512):
 
     dictionary.filter_tokens(stop_ids + once_ids) # remove stop words and words that appear only once
     dictionary.compactify()
-
     dictionary.save('%s.dict' % name) # store the dictionary
 
     corpus0 = LinkedCorpus()
     tfidf = models.TfidfModel(corpus0)
     corpus = tfidf[corpus0]
+    corpora.MmCorpus.serialize('%s.mm' % name, corpus)
+    corpus = corpora.MmCorpus('%s.mm' % name)
 
     lsi = models.LsiModel(corpus, id2word=dictionary, num_topics)
     lsi.save('%s-corpus.lsi' % name)
-
-    corpora.MmCorpus.serialize('%s.mm' % name, corpus)
-    corpus = corpora.MmCorpus('%s.mm' % name)
 
     index = similarities.Similarity('%s.index' % name, lsi[corpus], 
         num_features=corpus.num_terms)
@@ -77,7 +76,7 @@ def preprocess(name, num_topics=512):
 
 class LinkedCorpus(object):
      def __iter__(self):
-        for f in filelist[:10]:
+        for f in filelist:
             with open(f, 'r') as openf:        
                 x = json.load(openf) 
                 for profile in x['profiles']:
