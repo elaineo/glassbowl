@@ -31,12 +31,15 @@
     function onLinkedInLoad() {
         IN.Event.on(IN, "auth", getProfileData);
     }
-
-    // Handle the successful return from the API call
+  // Handle the successful return from the API call
     function onSuccess(data) {
         console.log(data);
+        var user=data.siteStandardProfileRequest.url;
+        var index=user.match(/&authType/);
+        user=user.substr(0, index.index);
+        console.log(user);
+    //     "https://www.linkedin.com/profile/view?id=94437556&authType=name&authToken=jGT_&trk=api*a4602041*s4918761*"
     }
-
     // Handle an error response from the API call
     function onError(error) {
         console.log(error);
@@ -148,6 +151,8 @@
             </form>
         </div>
     </aside>
+
+
     <section id="services" class="services bg-primary">
 
         <div class="container">
@@ -211,6 +216,16 @@
         </div>
         <!-- /.container -->
     </section>
+
+      <aside class="callout">
+        <div class="text-vertical-center">
+            <h3>Your Peers Are Earning...</h3>
+            <table id="peers">
+
+            </table>
+
+        </div>
+    </aside>
 
 </div>
 
@@ -313,6 +328,18 @@ $(document).ready(function () {
                                 "<td>" + json.links[i].link.Company)
                         };
                         window.location.hash = "#stage";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/searchpeople',
+                            dataType: "json",
+                            contentType: "json/application",
+                            data: jdata,
+                            crossDomain: true,
+                            success:    function (json) {
+                                $("")
+
+                            }
+                        })
                     },
             error: function (request, status, error) {
                 alert(error);
