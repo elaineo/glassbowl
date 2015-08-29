@@ -1,3 +1,7 @@
+import site
+site.getusersitepackages()
+site.addsitedir('/usr/local/lib/python2.7/dist-packages/')
+
 import gensim
 from gensim import corpora, models, similarities
 import nltk
