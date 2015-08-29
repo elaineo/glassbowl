@@ -48,6 +48,7 @@ def query_docs(texts, dictionary, lsi, index):
 
     # sort similarities in descending order
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
+    return sims
 
 def preprocess(name, num_topics=512):
     """
