@@ -73,6 +73,8 @@ def search():
     # else:
     #     return "error"
     return json.dumps(fakesalary)
+
+@app.route('/searchpeople', methods=['GET', 'POST'])
 def searchpeople():
     return json.dumps(fakepeers)
 

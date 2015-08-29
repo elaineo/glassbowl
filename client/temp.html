@@ -1,0 +1,139 @@
+$(document).ready(function () {
+        $("#go_form").click(function(e){
+            window.location.hash = "/";
+            e.preventDefault();
+            var jdata = JSON.stringify({'url': $("#inputurl").val()});
+            $("#ave_sal").html("");
+            $("#stage").html("");
+          $.ajax({
+            type: 'POST',
+            url: '/search',
+            dataType: "json",
+            contentType: "json/application",
+            data: jdata,
+            crossDomain: true,
+            success:    function (json) {
+                    $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + json.min_salary+" | <b>max</b>:"+json.max_salary+" | <b>average</b>:"+json.ave_salary+"</p>");
+                    $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+                    console.log(json);
+                        for (var i = 0; i < json.links.length; i++) {
+                            $("#stage").append("<tr class='danger'>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.Company,
+                                "<td>" + json.links[i].link.salary)
+                        };
+                        window.location.hash = "#stage";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/searchpeople',
+                            dataType: "json",
+                            contentType: "json/application",
+                            data: jdata,
+                            crossDomain: true,
+                            success:    function (json) {
+                            for (var i = 0; i < json.links.length; i++) {
+                            $("#people").append("<tr>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.img_url,
+                                "<td>" + json.links[i].link.profile_url)
+                        };
+
+                            }
+                        })
+                    },
+            error: function (request, status, error) {
+                alert(error);
+            }
+        });
+
+        })
+
+    // $("#go_form").submit();
+
+});
+
+
+
+<!-- salary -->
+       <section id="services" class="services">
+        <div class="container">
+            <div class="text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                  <h3>Your Peers Are Earning...</h3>
+                    <div id = "ave_sal"></div>
+                   <table id = "stage" class = "table-striped">
+
+                   </table>
+                    <div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+<!-- peers -->
+    <section id="services" class="services bg-primary">
+
+        <div class="container">
+            <div class="text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>People With Similar Job Title</h2>
+         <!--            <div id = "peer"></div> -->
+                   <table id = "peers">
+
+                   </table>
+                    <div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                          <!--       <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-cloud fa-stack-1x text-primary"></i>
+                            </span> -->
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                            <!--     <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-compass fa-stack-1x text-primary"></i>
+                            </span> -->
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                             <!--    <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-flask fa-stack-1x text-primary"></i>
+                            </span> -->
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                            <!--     <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-shield fa-stack-1x text-primary"></i>
+                            </span> -->
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
