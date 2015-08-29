@@ -1,6 +1,6 @@
 import MySQLdb as db
 from flask import Flask, render_template
-app = Flask(__name__,  template_folder='client', static_folder='client')
+app = Flask(__name__,  template_folder='client', static_folder='client/static')
 
 
 # mysql = MySQL()

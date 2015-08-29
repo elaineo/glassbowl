@@ -79,7 +79,7 @@ class LinkedCorpus(object):
         for f in filelist:
             with open(f, 'r') as openf:        
                 x = json.load(openf) 
-                for profile in x['profiles']:
+                for profile in x['profiles'][:4]:
                     t = nltk.word_tokenize(profile.lower())
                     yield dictionary.doc2bow(t)
 
@@ -87,5 +87,5 @@ def get_profiles(files):
     for f in files:
         with open(f, 'r') as openf:        
             x = json.load(openf) 
-            for profile in x['profiles']:
+            for profile in x['profiles'][:4]:
                 yield profile
