@@ -1,0 +1,21 @@
+{
+  "links": [
+    {"link": {
+    "Title": "Software Engineer",
+    "Company":"Google",
+    "salary":"$17,500"
+  }},{"link": {
+    "Title": "Software Developer",
+    "Company":"Cisco",
+    "salary":"$14,500"
+  }},
+    {"link": {
+    "Title": "Software Developer",
+    "Company":"Wells Fargo",
+    "salary":"$11,500"
+  }}
+  ],
+  "min_salary": "$11,500",
+  "max_salary": "$17,500",
+  "ave_salary": "$14,500"
+}
