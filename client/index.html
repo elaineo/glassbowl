@@ -315,6 +315,7 @@ $(document).ready(function () {
             success:    function (json) {
                     $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
                     $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+                    console.log(json);
                         for (var i = 0; i < json.links.length; i++) {
                             $("#stage").append("<tr>",
                                 "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,

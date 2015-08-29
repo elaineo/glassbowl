@@ -1,4 +1,4 @@
-import MySQLdb as db
+# import MySQLdb as db
 from flask import Flask, render_template, request
 from query_tools import *
 from query_api import *
@@ -46,14 +46,14 @@ def home():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    data = request.data
-    data = json.loads(data)
-    url = data.get('url')
-    logconsole.debug(url)
-    if url:
-        return search_query(url)
-    else:
-        return "error"
+    # data = request.data
+    # data = json.loads(data)
+    # url = data.get('url')
+    # logconsole.debug(url)
+    # if url:
+    #     return search_query(url)
+    # else:
+    #     return "error"
     return json.dumps(temp)
 
 if __name__ == '__main__':
