@@ -1,17 +1,17 @@
 {
   "links": [
-    {"link1": {
+    {"link": {
     "name": "Jay",
     "Title": "Software Engineer",
     "Company":"Google",
     "url": "https://www.linkedin.com/profile/view?id=ADEAAAauYmQBGwCTxbICPCV-k53MsxyYuaGiOyw"
-  }},{"link2": {
+  }},{"link": {
     "name": "Tang",
     "Title": "Software Developer",
     "Company":"Cisco",
     "url": "https://www.linkedin.com/profile/view?id=ADEAAAS-uHMBmmfUr8-urMQ0GGDu9odW3VYjK1w"
   }},
-    {"link3": {
+    {"link": {
     "name": "Ahmadreza",
     "Title": "Software Developer",
     "Company":"Wells Fargo",
