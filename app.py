@@ -51,7 +51,8 @@ def search():
     url = data.get('url')
     logconsole.debug(url)
     if url:
-        return search_query(url)
+        r = search_query(url)
+        logconsole.debug(r)
     else:
         return "error"
     return json.dumps(temp)

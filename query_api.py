@@ -33,7 +33,7 @@ def index_lookup(indices):
     
     with open(os.path.join(APP_ROOT, '%s-files.json' % name), 'r') as f:
         filelist = json.load(f)
-
+    
     r = [filelist[realidx[i]] for i in indices]
     return r
 
