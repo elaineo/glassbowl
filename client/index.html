@@ -290,21 +290,12 @@ $(function() {
 });
 
 $(document).ready(function () {
-    // $.getJSON("static/fakedata.json",
-    // function (json) {
-    // $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
-    // $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-    //     for (var i = 0; i < json.links.length; i++) {
-    //         $("#stage").append("<tr>",
-    //             "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-    //             "<td>" + json.links[i].link.Company)
-    //     }
-    // });
         $("#go_form").click(function(e){
+            window.location.hash = "/";
             e.preventDefault();
             var jdata = JSON.stringify({'url': $("#inputurl").val()});
-            $("#ave_sal").html();
-            $("#stage").html();
+            $("#ave_sal").html("");
+            $("#stage").html("");
           $.ajax({
             type: 'POST',
             url: '/search',
@@ -321,6 +312,7 @@ $(document).ready(function () {
                                 "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
                                 "<td>" + json.links[i].link.Company)
                         };
+                        window.location.hash = "#stage";
                     },
             error: function (request, status, error) {
                 alert(error);
