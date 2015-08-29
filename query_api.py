@@ -26,3 +26,21 @@ def pull_linkedidx(indices):
             results.append([res[0], res[1]])
     conn.close()
     return results
+
+boxes =['background-summary-container','background-experience-container',
+        'background-languages-container', 'background-skills-container',
+       'background-education-container','background-honors-container']
+
+def pull_profile(url):
+    r = requests.get(url)
+    content = ""
+    for b in boxes:
+        try:
+            divs = BeautifulSoup(r.content).find('div', {'id': b})
+            for script in divs(["script", "style"]):
+                script.extract()    # rip it out   
+            for d in divs.findAll('div'):
+                content += " ".join(d.strings) + " "
+        except:
+            continue
+    return content
