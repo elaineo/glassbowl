@@ -21,6 +21,35 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <script type="text/javascript" src="https://platform.linkedin.com/in.js">
+    api_key:   'LMy1WQW9jpVP50od'
+    authorize: true
+    onLoad: onLinkedInLoad
+</script>
+
+<script type="text/javascript">
+
+    // Setup an event listener to make an API call once auth is complete
+    function onLinkedInLoad() {
+        IN.Event.on(IN, "auth", getProfileData);
+    }
+
+    // Handle the successful return from the API call
+    function onSuccess(data) {
+        console.log(data);
+    }
+
+    // Handle an error response from the API call
+    function onError(error) {
+        console.log(error);
+    }
+
+    // Use the API call wrapper to request the member's basic profile data
+    function getProfileData() {
+        IN.API.Raw("/people/~").result(onSuccess).error(onError);
+    }
+
+</script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -108,6 +137,7 @@
     <aside class="callout">
         <div class="text-vertical-center">
             <h3>Find out salary in your industry by log in through Linkedin</h3>
+            <script type="IN/Login"></script>
             <form method = "" action = "post">
                 <input type = "" name = "email" placeholder = "linkedin email">
                 <input type = "submit" value = "register">
