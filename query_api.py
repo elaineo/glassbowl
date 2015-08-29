@@ -1,4 +1,4 @@
-import MySQLdb as db
+# import MySQLdb as db
 from query_tools import *
 import requests
 

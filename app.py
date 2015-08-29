@@ -39,7 +39,7 @@ temp = {
 # app.config['MYSQL_DATABASE_DB'] = 'glass'
 # app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 # mysql.init_app(app)
-    
+
 @app.route('/')
 def home():
     return render_template('index.html')

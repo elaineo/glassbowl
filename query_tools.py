@@ -1,5 +1,5 @@
-import gensim
-from gensim import corpora, models, similarities
+# import gensim
+# from gensim import corpora, models, similarities
 import nltk
 import json
 import os
@@ -46,7 +46,7 @@ def query_docs(texts, dictionary, lsi, index):
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
 def preprocess(name, num_topics=512):
-    """ 
+    """
         Generate corpus, dictionary, lsi, index
         this takes a long time to run
     """
@@ -54,7 +54,7 @@ def preprocess(name, num_topics=512):
     with open('%s-files.json' % name) as docs_file:
         documents = json.load(docs_file)
 
-    dictionary = corpora.Dictionary(nltk.word_tokenize(doc.lower()) for doc in 
+    dictionary = corpora.Dictionary(nltk.word_tokenize(doc.lower()) for doc in
         get_profiles(documents))
 
     # remove stopwords for each corpus and tokenize
@@ -77,7 +77,7 @@ def preprocess(name, num_topics=512):
     lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=num_topics)
     lsi.save('%s-corpus.lsi' % name)
 
-    index = similarities.Similarity('%s.index' % name, lsi[corpus], 
+    index = similarities.Similarity('%s.index' % name, lsi[corpus],
         num_features=corpus.num_terms)
 
     index.save('%s-corpus.index' % name)
@@ -85,15 +85,15 @@ def preprocess(name, num_topics=512):
 class LinkedCorpus(object):
      def __iter__(self):
         for f in filelist:
-            with open(f, 'r') as openf:        
-                x = json.load(openf) 
+            with open(f, 'r') as openf:
+                x = json.load(openf)
                 for profile in x['profiles'][:4]:
                     t = nltk.word_tokenize(profile.lower())
                     yield dictionary.doc2bow(t)
 
 def get_profiles(files):
     for f in files:
-        with open(f, 'r') as openf:        
-            x = json.load(openf) 
+        with open(f, 'r') as openf:
+            x = json.load(openf)
             for profile in x['profiles'][:4]:
                 yield profile
