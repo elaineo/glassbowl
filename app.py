@@ -1,7 +1,7 @@
 # import MySQLdb as db
 from flask import Flask, render_template, request
-# from query_tools import *
-# from query_api import *
+from query_tools import *
+from query_api import *
 import logging,logging.config, yaml
 logging.config.dictConfig(yaml.load(open('logging.conf')))
 
