@@ -1,4 +1,3 @@
-# import MySQLdb as db
 from flask import Flask, render_template, request
 from query_tools import *
 from query_api import *
@@ -74,7 +73,6 @@ def search():
     else:
         return "error"
     return json.dumps(temp)
-
 
 if __name__ == '__main__':
     logfile    = logging.getLogger('file')
