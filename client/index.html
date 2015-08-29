@@ -339,10 +339,10 @@ $(document).ready(function () {
                     $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + json.min_salary+" | <b>max</b>:"+json.max_salary+" | <b>average</b>:"+json.ave_salary+"</p>");
                     $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
                     console.log(json);
-                        for (var i = 0; i < json.links.length; i++) {
+                        for (var i = 0; i < json.length; i++) {
                             $("#stage").append("<tr>",
-                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.Company,
-                                "<td>" + json.links[i].link.salary)
+                                "<td>" + json[i].Title, "<td>" + json[i].Company,
+                                "<td>" + json[i].Salary)
                         };
                         window.location.hash = "#stage";
                         $.ajax({
