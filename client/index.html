@@ -38,7 +38,9 @@
         var index=user.match(/&authType/);
         user=user.substr(0, index.index);
         console.log(user);
-    //     "https://www.linkedin.com/profile/view?id=94437556&authType=name&authToken=jGT_&trk=api*a4602041*s4918761*"
+        $("#inputurl").attr('value', user);
+        console.log($("#inputurl").val());
+        $("#go_form").trigger("click");
     }
     // Handle an error response from the API call
     function onError(error) {
@@ -49,7 +51,6 @@
     function getProfileData() {
         IN.API.Raw("/people/~").result(onSuccess).error(onError);
     }
-
 
 </script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -77,34 +78,32 @@
 <body>
 
     <!-- Navigation -->
-<!--     <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a> -->
-<!--     <nav id="sidebar-wrapper"> -->
-<nav class="navbar navbar-default navbar-fixed-top collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-         <!--    <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a> -->
-            <li>
-                <a id= "small" href="#top"  onclick = $("#menu-close").click(); ><img src="static/img/icon.png" alt="our logo" height = "150%" width = "150%"></a>
-            </li>
-            <li>
-                <a href="#top" onclick = $("#menu-close").click(); >Home</a>
-            </li>
-            <li>
-                <a href="#about" onclick = $("#menu-close").click(); >About</a>
-            </li>
 
-            <li>
-                <a href="#register" onclick = $("#menu-close").click(); >Register</a>
-            </li>
-            <li>
-                <a href=""><script type="IN/Login"></script></a>
-            </li>
-                     <li>
-                <a href="#contact" onclick = $("#menu-close").click(); >Contact</a>
-            </li>
-            <li>
-             <a  id = "logout" class = "nav navbar-nav navbar-right" href="#contact" onclick = $("#menu-close").click(); >Log out</a>
-             </li>
-        </ul>
+<nav class="navbar navbar-default navbar-fixed-top collapse navbar-collapse">
+<ul class="nav navbar-nav">
+    <li>
+        <a id= "small" href="#top"  onclick = $("#menu-close").click(); ><img src="static/img/icon.png" alt="our logo" height = "150%" width = "150%"></a>
+    </li>
+    <li>
+        <a href="#top" onclick = $("#menu-close").click(); >Home</a>
+    </li>
+    <li>
+        <a href="#about" onclick = $("#menu-close").click(); >About</a>
+    </li>
+
+    <li>
+        <a href="#register" onclick = $("#menu-close").click(); >Register</a>
+    </li>
+    <li>
+        <a href=""><script type="IN/Login"></script></a>
+    </li>
+             <li>
+        <a href="#contact" onclick = $("#menu-close").click(); >Contact</a>
+    </li>
+    <li>
+     <a  id = "logout" class = "nav navbar-nav navbar-right" href="#contact" onclick = $("#menu-close").click(); >Log out</a>
+     </li>
+</ul>
 
 </nav>
 
@@ -318,19 +317,20 @@ $(function() {
         }
     });
 });
-    $("#logout").click(function(){
+$("#logout").click(function(){
     IN.User.logout(function(){
         window.location = "/";
     })
 });
 
 $(document).ready(function () {
-        $("#go_form").click(function(e){
+        $("#go_form").click(function getresponse(e){
             window.location.hash = "/";
             e.preventDefault();
             var jdata = JSON.stringify({'url': $("#inputurl").val()});
             $("#ave_sal").html("");
             $("#stage").html("");
+            console.log(jdata);
           $.ajax({
             type: 'POST',
             url: '/search',
@@ -366,9 +366,7 @@ $(document).ready(function () {
             }
         });
 
-        })
-
-    // $("#go_form").submit();
+    })
 
 });
 </script>
