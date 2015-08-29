@@ -328,16 +328,16 @@ $(document).ready(function () {
                         // $("#stage").css({
                         //     'background-color':'red'}
                         //     );
-                        window.location.hash = "#stage";
+                        window.location.hash = "#services";
                         $.ajax({
                             type: 'POST',
-                            url: '/searchpeople',
+                            url: '/search_ppl',
                             dataType: "json",
                             contentType: "json/application",
                             data: jdata,
                             crossDomain: true,
                             success:    function (json) {
-                            for (var i = 0; i < json.links.length; i++) {
+                            for (var i = 0; i < json.length; i++) {
                                 var x = i+1;
                                 x = "#p" + x;
                             $(x).attr('src', json.links[i].link.img_url);
