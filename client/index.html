@@ -294,14 +294,26 @@
         function (json) {
         $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
         $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-
             for (var i = 0; i < json.links.length; i++) {
                 $("#stage").append("<tr>",
                     "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
                     "<td>" + json.links[i].link.Company)
-
             }
         });
+
+          $.ajax({
+            type: 'POST',
+            url: 'http://redrock.com:6606/api/values/get',
+            dataType: "json",
+            crossDomain: true,
+            success: function (msg) {
+                alert("success");
+            },
+            error: function (request, status, error) {
+                alert(error);
+            }
+        });
+
     });
     </script>
 
