@@ -113,7 +113,7 @@
             <br>
         <form method = "post" action="/search">
         <input  id = "inputurl" type = "text" name="linkedin_url" placeholder = "Please Paste Your Linkedin URL">
-        <input id = "go_form" type = "submit" value = "Go!" style ="color: teal;font-face: 'Comic Sans MS'; font-size: larger">
+        <input href = "#stage" id = "go_form" type = "submit" value = "Go!" style ="color: teal;font-face: 'Comic Sans MS'; font-size: larger">
         </form>
         </div>
     </header>
@@ -303,6 +303,8 @@ $(document).ready(function () {
         $("#go_form").click(function(e){
             e.preventDefault();
             var jdata = JSON.stringify({'url': $("#inputurl").val()});
+            $("#ave_sal").html();
+            $("#stage").html();
           $.ajax({
             type: 'POST',
             url: '/search',
@@ -317,7 +319,7 @@ $(document).ready(function () {
                             $("#stage").append("<tr>",
                                 "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
                                 "<td>" + json.links[i].link.Company)
-                        }
+                        };
                     },
             error: function (request, status, error) {
                 alert(error);
