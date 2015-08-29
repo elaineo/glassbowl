@@ -23,6 +23,6 @@ def pull_linkedidx(indices):
             query = "select company, title from linkedin where id = %s" % idx
             cur.execute(query)
             res = cur.fetchone()
-            results.append(res.fetchone())
+            results.append([res[0], res[1]])
     conn.close()
     return results
