@@ -1,36 +1,54 @@
-import MySQLdb as db
+# import MySQLdb as db
 from flask import Flask, render_template, request
-from query_tools import *
-from query_api import *
+# from query_tools import *
+# from query_api import *
 import logging,logging.config, yaml
 logging.config.dictConfig(yaml.load(open('logging.conf')))
 
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 import json
 
-temp = {
+fakesalary = {
   "links": [
     {"link": {
-    "name": "Jay",
     "Title": "Software Engineer",
     "Company":"Google",
-    "url": "https://www.linkedin.com/profile/view?id=ADEAAAauYmQBGwCTxbICPCV-k53MsxyYuaGiOyw"
+    "salary":"$17,500"
   }},{"link": {
-    "name": "Tang",
     "Title": "Software Developer",
     "Company":"Cisco",
-    "url": "https://www.linkedin.com/profile/view?id=ADEAAAS-uHMBmmfUr8-urMQ0GGDu9odW3VYjK1w"
+    "salary":"$14,500"
   }},
     {"link": {
-    "name": "Ahmadreza",
     "Title": "Software Developer",
     "Company":"Wells Fargo",
-    "url": "https://www.linkedin.com/profile/view?id=ADEAAA93W-MBpZgbhfh6gD2mcvbXZmVNZ9DurXs"
+    "salary":"$11,500"
   }}
   ],
-  "salary": "$13,500"
+  "min_salary": "$11,500",
+  "max_salary": "$17,500",
+  "ave_salary": "$14,500"
 }
 
+fakepeers={
+  "links": [
+    {"link": {
+    "Title": "Software Engineer",
+    "img_url":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/4/005/042/1a1/08b48ac.jpg",
+    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAAauYmQBGwCTxbICPCV-k53MsxyYuaGiOyw"
+  }},{"link": {
+    "Title": "Software Developer",
+     "img_url":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAMPAAAAJDQwMmRiMGJlLWNkNTgtNDAxNC1hN2UwLTNmNjY3OGEwYmRiNA.jpg",
+    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAAS-uHMBmmfUr8-urMQ0GGDu9odW3VYjK1w"
+
+  }},
+    {"link": {
+    "Title": "Software Developer",
+     "img_url":"http://www.utexas.edu/cola/history/_files/images/people/graduation_speakers/ryan_maidie.jpg",
+    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAA93W-MBpZgbhfh6gD2mcvbXZmVNZ9DurXs"
+  }}
+  ]
+}
 # mysql = MySQL()
 
 # MySQL configurations
@@ -56,6 +74,7 @@ def search():
     else:
         return "error"
     return json.dumps(temp)
+
 
 if __name__ == '__main__':
     logfile    = logging.getLogger('file')

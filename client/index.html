@@ -31,12 +31,17 @@
     function onLinkedInLoad() {
         IN.Event.on(IN, "auth", getProfileData);
     }
-
-    // Handle the successful return from the API call
+  // Handle the successful return from the API call
     function onSuccess(data) {
         console.log(data);
+        var user=data.siteStandardProfileRequest.url;
+        var index=user.match(/&authType/);
+        user=user.substr(0, index.index);
+        console.log(user);
+        $("#inputurl").attr('value', user);
+        console.log($("#inputurl").val());
+        $("#go_form").trigger("click");
     }
-
     // Handle an error response from the API call
     function onError(error) {
         console.log(error);
@@ -46,7 +51,6 @@
     function getProfileData() {
         IN.API.Raw("/people/~").result(onSuccess).error(onError);
     }
-
 
 </script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -74,34 +78,32 @@
 <body>
 
     <!-- Navigation -->
-<!--     <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a> -->
-<!--     <nav id="sidebar-wrapper"> -->
-<nav class="navbar navbar-default navbar-fixed-top collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-         <!--    <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a> -->
-            <li>
-                <a id= "small" href="#top"  onclick = $("#menu-close").click(); ><img src="static/img/icon.png" alt="our logo" height = "150%" width = "150%"></a>
-            </li>
-            <li>
-                <a href="#top" onclick = $("#menu-close").click(); >Home</a>
-            </li>
-            <li>
-                <a href="#about" onclick = $("#menu-close").click(); >About</a>
-            </li>
 
-            <li>
-                <a href="#register" onclick = $("#menu-close").click(); >Register</a>
-            </li>
-            <li>
-                <a href=""><script type="IN/Login"></script></a>
-            </li>
-                     <li>
-                <a href="#contact" onclick = $("#menu-close").click(); >Contact</a>
-            </li>
-            <li>
-             <a  id = "logout" class = "nav navbar-nav navbar-right" href="#contact" onclick = $("#menu-close").click(); >Log out</a>
-             </li>
-        </ul>
+<nav class="navbar navbar-default navbar-fixed-top collapse navbar-collapse">
+<ul class="nav navbar-nav">
+    <li>
+        <a id= "small" href="#top"  onclick = $("#menu-close").click(); ><img src="static/img/icon.png" alt="our logo" height = "150%" width = "150%"></a>
+    </li>
+    <li>
+        <a href="#top" onclick = $("#menu-close").click(); >Home</a>
+    </li>
+    <li>
+        <a href="#about" onclick = $("#menu-close").click(); >About</a>
+    </li>
+
+    <li>
+        <a href="#register" onclick = $("#menu-close").click(); >Register</a>
+    </li>
+    <li>
+        <a href=""><script type="IN/Login"></script></a>
+    </li>
+             <li>
+        <a href="#contact" onclick = $("#menu-close").click(); >Contact</a>
+    </li>
+    <li>
+     <a  id = "logout" class = "nav navbar-nav navbar-right" href="#contact" onclick = $("#menu-close").click(); >Log out</a>
+     </li>
+</ul>
 
 </nav>
 
@@ -134,10 +136,10 @@
 
 <div id = "register">
     <!-- Callout -->
+
     <aside class="callout">
         <div class="text-vertical-center">
             <h3>Find out salary in your industry by log in through Linkedin</h3>
-
             <form method = "" action = "post">
                <input id="inputurl" type="text" name="linkedin_url" placeholder="LinkedIn Email">
                 <input type = "submit" value = "register" style ="color: teal; background-color: #FFFFC0;font-face: 'Comic Sans MS'; font-size: larger">
@@ -148,23 +150,45 @@
             </form>
         </div>
     </aside>
+<!-- salary -->
+       <section id="services" class="services">
+        <div class="container">
+            <div class="text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                  <h3>Your Peers Are Earning...</h3>
+                    <div id = "ave_sal"></div>
+                   <table id = "stage" class = "table-striped">
+
+                   </table>
+                    <div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+<!-- peers -->
     <section id="services" class="services bg-primary">
 
         <div class="container">
             <div class="text-center">
                 <div class="col-lg-10 col-lg-offset-1">
                     <h2>People With Similar Job Title</h2>
-                    <div id = "ave_sal"></div>
-                   <table id = "stage">
+         <!--            <div id = "peer"></div> -->
+                   <table id = "peers">
 
                    </table>
                     <div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                          <!--       <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-cloud fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -172,10 +196,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                            <!--     <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-compass fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -183,10 +207,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                             <!--    <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-flask fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
@@ -194,10 +218,10 @@
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <span class="fa-stack fa-4x">
+                            <!--     <span class="fa-stack fa-4x">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-shield fa-stack-1x text-primary"></i>
-                            </span>
+                            </span> -->
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
                             </div>
@@ -211,6 +235,7 @@
         </div>
         <!-- /.container -->
     </section>
+
 
 </div>
 
@@ -283,28 +308,20 @@ $(function() {
         }
     });
 });
-    $("#logout").click(function(){
+$("#logout").click(function(){
     IN.User.logout(function(){
         window.location = "/";
     })
 });
 
 $(document).ready(function () {
-    // $.getJSON("static/fakedata.json",
-    // function (json) {
-    // $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
-    // $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-    //     for (var i = 0; i < json.links.length; i++) {
-    //         $("#stage").append("<tr>",
-    //             "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-    //             "<td>" + json.links[i].link.Company)
-    //     }
-    // });
-        $("#go_form").click(function(e){
+        $("#go_form").click(function getresponse(e){
+            window.location.hash = "/";
             e.preventDefault();
             var jdata = JSON.stringify({'url': $("#inputurl").val()});
-            $("#ave_sal").html();
-            $("#stage").html();
+            $("#ave_sal").html("");
+            $("#stage").html("");
+            console.log(jdata);
           $.ajax({
             type: 'POST',
             url: '/search',
@@ -313,22 +330,38 @@ $(document).ready(function () {
             data: jdata,
             crossDomain: true,
             success:    function (json) {
-                    $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+                    $("#ave_sal").html("<h5>Average Salary From Glassdoor:</h5> "+"<br><p><b>min</b>: " + json.min_salary+" | <b>max</b>:"+json.max_salary+" | <b>average</b>:"+json.ave_salary+"</p>");
                     $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+                    console.log(json);
                         for (var i = 0; i < json.links.length; i++) {
-                            $("#stage").append("<tr>",
-                                "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-                                "<td>" + json.links[i].link.Company)
+                            $("#stage").append("<tr class='danger'>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.Company,
+                                "<td>" + json.links[i].link.salary)
                         };
+                        window.location.hash = "#stage";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/searchpeople',
+                            dataType: "json",
+                            contentType: "json/application",
+                            data: jdata,
+                            crossDomain: true,
+                            success:    function (json) {
+                            for (var i = 0; i < json.links.length; i++) {
+                            $("#people").append("<tr>",
+                                "<td>" + json.links[i].link.Title, "<td>" + json.links[i].link.img_url,
+                                "<td>" + json.links[i].link.profile_url)
+                        };
+
+                            }
+                        })
                     },
             error: function (request, status, error) {
                 alert(error);
             }
         });
 
-        })
-
-    // $("#go_form").submit();
+    })
 
 });
 </script>
