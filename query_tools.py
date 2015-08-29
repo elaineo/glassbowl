@@ -1,3 +1,7 @@
+import site
+site.getusersitepackages()
+site.addsitedir('/usr/local/lib/python2.7/dist-packages/')
+
 import gensim
 from gensim import corpora, models, similarities
 import nltk
@@ -44,6 +48,7 @@ def query_docs(texts, dictionary, lsi, index):
 
     # sort similarities in descending order
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
+    return sims
 
 def preprocess(name, num_topics=512):
     """
