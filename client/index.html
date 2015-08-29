@@ -113,7 +113,7 @@
             <br>
         <form method = "post" action="/search">
         <input  id = "inputurl" type = "text" name="linkedin_url" placeholder = "Please Paste Your Linkedin URL">
-        <input type = "submit" value = "Go!" style ="color: teal;font-face: 'Comic Sans MS'; font-size: larger">
+        <input id = "go_form" type = "submit" value = "Go!" style ="color: teal;font-face: 'Comic Sans MS'; font-size: larger">
         </form>
         </div>
     </header>
@@ -290,29 +290,39 @@
     });
 
     $(document).ready(function () {
-        $.getJSON("static/fakedata.json",
-        function (json) {
-        $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
-        $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-            for (var i = 0; i < json.links.length; i++) {
-                $("#stage").append("<tr>",
-                    "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-                    "<td>" + json.links[i].link.Company)
-            }
-        });
+        // $.getJSON("static/fakedata.json",
+        // function (json) {
+        // $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+        // $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+        //     for (var i = 0; i < json.links.length; i++) {
+        //         $("#stage").append("<tr>",
+        //             "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
+        //             "<td>" + json.links[i].link.Company)
+        //     }
+        // });
+            $("#go_form").submit(function(e){
+                      $.ajax({
+                        type: 'POST',
+                        url: '/search',
+                        data: $("#inputurl"),
+                        crossDomain: true,
+                        success:    function (json) {
+                                $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+                                $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+                                    for (var i = 0; i < json.links.length; i++) {
+                                        $("#stage").append("<tr>",
+                                            "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
+                                            "<td>" + json.links[i].link.Company)
+                                    }
+                                },
+                        error: function (request, status, error) {
+                            alert(error);
+                        }
+                    });
 
-          $.ajax({
-            type: 'POST',
-            url: 'http://redrock.com:6606/api/values/get',
-            dataType: "json",
-            crossDomain: true,
-            success: function (msg) {
-                alert("success");
-            },
-            error: function (request, status, error) {
-                alert(error);
-            }
-        });
+            })
+
+        // $("#go_form").submit();
 
     });
     </script>
