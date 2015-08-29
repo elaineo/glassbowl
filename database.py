@@ -19,7 +19,7 @@ def getInfo(index):
 	dict["Company"] = data[0]
 	dict["Title"]=data[1]
 	dict["Salary"] = data[2]
-        return dict
+    return dict
 
 
 db1 = mdb.connect(host="localhost",user="root", db="mydata")
