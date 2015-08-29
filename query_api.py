@@ -3,6 +3,7 @@ from query_tools import *
 import requests
 import os
 import json
+from bs4 import BeautifulSoup
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_DATA = os.path.join(APP_ROOT, 'data')

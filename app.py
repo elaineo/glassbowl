@@ -1,7 +1,6 @@
-# import MySQLdb as db
 from flask import Flask, render_template, request
-# from query_tools import *
-# from query_api import *
+from query_tools import *
+from query_api import *
 import logging,logging.config, yaml
 logging.config.dictConfig(yaml.load(open('logging.conf')))
 
@@ -64,19 +63,16 @@ def home():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    # data = request.data
-    # data = json.loads(data)
-    # url = data.get('url')
-    # logconsole.debug(url)
-    # if url:
-    #     return search_query(url)
-    # else:
-    #     return "error"
-    return json.dumps(fakesalary)
-
-@app.route('/searchpeople', methods=['GET', 'POST'])
-def searchpeople():
-    return json.dumps(fakepeers)
+    data = request.data
+    data = json.loads(data)
+    url = data.get('url')
+    logconsole.debug(url)
+    if url:
+        r = search_query(url)
+        logconsole.debug(r)
+    else:
+        return "error"
+    return json.dumps(temp)
 
 if __name__ == '__main__':
     logfile    = logging.getLogger('file')

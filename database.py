@@ -19,7 +19,7 @@ def getInfo(index):
 	dict["Company"] = data[0]
 	dict["Title"]=data[1]
 	dict["Salary"] = data[2]
-        return dict
+    return dict
 
 def getSalary(dict_list):
 	dict_out_list = []
