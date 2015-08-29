@@ -24,8 +24,7 @@ with db1:
     
     cur = db1.cursor()
     cur.execute("DROP TABLE IF EXISTS Salaries")
-    cur.execute("CREATE TABLE Salaries(Company VARCHAR(255), Title VARCHAR(255), Salary VARCHAR(255))") 
-#Keywords VARCHAR(255))")
+    cur.execute("CREATE TABLE Salaries(Company VARCHAR(255), Title VARCHAR(255), Salary VARCHAR(255), Keywords INTEGER(255) AUTO_INCREMENT, PRIMARY KEY (Keywords))")
 
     for i in range(len(data)):
     	company = data[i]
