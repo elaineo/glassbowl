@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +8,7 @@
     <meta name="author" content="">
 
     <title>LinkedX - Find the salary you deserve!</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <!-- Bootstrap Core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
 
@@ -48,6 +46,7 @@
     function getProfileData() {
         IN.API.Raw("/people/~").result(onSuccess).error(onError);
     }
+
 
 </script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -150,12 +149,15 @@
         </div>
     </aside>
     <section id="services" class="services bg-primary">
+
         <div class="container">
             <div class="text-center">
                 <div class="col-lg-10 col-lg-offset-1">
                     <h2>People With Similar Job Title</h2>
-                   <!--  <hr class="small"> -->
-                   <div><h4>average salary: fake data</h4></div>
+                    <div id = "ave_sal"></div>
+                   <table id = "stage">
+
+                   </table>
                     <div>
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
@@ -244,8 +246,9 @@
         </div>
     </footer>
 
-    <!-- jQuery -->
-    <script src="static/js/jquery.js"></script>
+        <!-- jQuery -->
+<script src="static/js/jquery.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="static/js/bootstrap.min.js"></script>
@@ -284,6 +287,32 @@
         IN.User.logout(function(){
             window.location = "/";
         })
+    });
+
+    $(document).ready(function () {
+        $.getJSON("static/fakedata.json",
+        function (json) {
+        $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+        $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+            for (var i = 0; i < json.links.length; i++) {
+                $("#stage").append("<tr>",
+                    "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
+                    "<td>" + json.links[i].link.Company)
+            }
+        });
+
+          $.ajax({
+            type: 'POST',
+            url: 'http://redrock.com:6606/api/values/get',
+            dataType: "json",
+            crossDomain: true,
+            success: function (msg) {
+                alert("success");
+            },
+            error: function (request, status, error) {
+                alert(error);
+            }
+        });
 
     });
     </script>
