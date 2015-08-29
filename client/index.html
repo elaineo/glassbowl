@@ -250,82 +250,86 @@
 <script src="static/js/jquery.js"></script>
 
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="static/js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="static/js/bootstrap.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script>
-    // Closes the sidebar menu
-    $("#menu-close").click(function(e) {
-        e.preventDefault();
-        $("#sidebar-wrapper").toggleClass("active");
+<!-- Custom Theme JavaScript -->
+<script>
+// Closes the sidebar menu
+$("#menu-close").click(function(e) {
+    e.preventDefault();
+    $("#sidebar-wrapper").toggleClass("active");
+});
+
+// Opens the sidebar menu
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#sidebar-wrapper").toggleClass("active");
+});
+
+// Scrolls to the selected menu item on the page
+$(function() {
+    $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
+            }
+        }
     });
+});
+    $("#logout").click(function(){
+    IN.User.logout(function(){
+        window.location = "/";
+    })
+});
 
-    // Opens the sidebar menu
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#sidebar-wrapper").toggleClass("active");
-    });
-
-    // Scrolls to the selected menu item on the page
-    $(function() {
-        $('a[href*=#]:not([href=#])').click(function() {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
-
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
-                }
+$(document).ready(function () {
+    // $.getJSON("static/fakedata.json",
+    // function (json) {
+    // $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+    // $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+    //     for (var i = 0; i < json.links.length; i++) {
+    //         $("#stage").append("<tr>",
+    //             "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
+    //             "<td>" + json.links[i].link.Company)
+    //     }
+    // });
+        $("#go_form").click(function(e){
+            e.preventDefault();
+            var jdata = JSON.stringify({'url': $("#inputurl").val()});
+          $.ajax({
+            type: 'POST',
+            url: '/search',
+            dataType: "json",
+            contentType: "json/application",
+            data: jdata,
+            crossDomain: true,
+            success:    function (json) {
+                    $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
+                    $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
+                        for (var i = 0; i < json.links.length; i++) {
+                            $("#stage").append("<tr>",
+                                "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
+                                "<td>" + json.links[i].link.Company)
+                        }
+                    },
+            error: function (request, status, error) {
+                alert(error);
             }
         });
-    });
-        $("#logout").click(function(){
-        IN.User.logout(function(){
-            window.location = "/";
+
         })
-    });
 
-    $(document).ready(function () {
-        // $.getJSON("static/fakedata.json",
-        // function (json) {
-        // $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
-        // $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-        //     for (var i = 0; i < json.links.length; i++) {
-        //         $("#stage").append("<tr>",
-        //             "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-        //             "<td>" + json.links[i].link.Company)
-        //     }
-        // });
-            $("#go_form").submit(function(e){
-                      $.ajax({
-                        type: 'POST',
-                        url: '/search',
-                        data: $("#inputurl"),
-                        crossDomain: true,
-                        success:    function (json) {
-                                $("#ave_sal").html("<h4>Average Salary From Glassdoor: "+ json.salary+"</h4>");
-                                $("#stage").append("<tr><td>Name</td><td>Position</td><td>Company</td></tr>");
-                                    for (var i = 0; i < json.links.length; i++) {
-                                        $("#stage").append("<tr>",
-                                            "<td>" + json.links[i].link.name, "<td>" + json.links[i].link.Title,
-                                            "<td>" + json.links[i].link.Company)
-                                    }
-                                },
-                        error: function (request, status, error) {
-                            alert(error);
-                        }
-                    });
+    // $("#go_form").submit();
 
-            })
-
-        // $("#go_form").submit();
-
-    });
-    </script>
+});
+</script>
 
 </body>
 
