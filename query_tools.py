@@ -3,6 +3,13 @@ from gensim import corpora, models, similarities
 import nltk
 import json
 
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+APP_DATA = os.path.join(APP_ROOT, 'data')
+
+def open_file(name):
+    with open(os.path.join(APP_DATA, name)) as f:
+        f.read()
+
 def load_docs(name):
     """ Load documents
             Preprocessed: dictionary, corpus, index, lsi
