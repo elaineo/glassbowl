@@ -11,6 +11,9 @@ import os
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_DATA = os.path.join(APP_ROOT, 'data')
 
+with open(os.path.join(APP_ROOT, '%s-files.json' % name), 'r') as f:
+    filelist = json.load(f)
+
 def open_file(name):
     with open(os.path.join(APP_DATA, name)) as f:
         f.read()
@@ -92,7 +95,7 @@ class LinkedCorpus(object):
         for f in filelist:
             with open(f, 'r') as openf:
                 x = json.load(openf)
-                for profile in x['profiles'][:4]:
+                for profile in x['profiles'][:2]:
                     t = nltk.word_tokenize(profile.lower())
                     yield dictionary.doc2bow(t)
 
@@ -100,5 +103,5 @@ def get_profiles(files):
     for f in files:
         with open(f, 'r') as openf:
             x = json.load(openf)
-            for profile in x['profiles'][:4]:
+            for profile in x['profiles'][:2]:
                 yield profile
