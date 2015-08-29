@@ -1,5 +1,5 @@
-# import gensim
-# from gensim import corpora, models, similarities
+import gensim
+from gensim import corpora, models, similarities
 import nltk
 import json
 import os
