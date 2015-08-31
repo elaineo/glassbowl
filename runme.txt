@@ -1,3 +1,0 @@
-cd /var/www/linkedin
-sudo git pull
-sudo apachectl restart

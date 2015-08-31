@@ -1,9 +1,0 @@
-// Handle the successful return from the API call
-    function onSuccess(data) {
-        console.log(data);
-        var user=data.siteStandardProfileRequest.url;
-        var index=user.indexOfRegex(/[&authType]/gi);
-        user=user.substr(0, index);
-        console.log(user);
-    //     "https://www.linkedin.com/profile/view?id=94437556&authType=name&authToken=jGT_&trk=api*a4602041*s4918761*"
-    }
