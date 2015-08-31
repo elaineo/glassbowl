@@ -166,7 +166,7 @@
         <div class="container">
             <div class="text-center">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <h2>People With Similar Job Title</h2>
+                    <h2>Similar Profiles</h2>
          <!--            <div id = "peer"></div> -->
                     <div id = "peers">
                         <div class="col-md-4 col-sm-6">
@@ -176,7 +176,7 @@
       <!--                           <i class="fa fa-cloud fa-stack-1x text-primary"></i> -->
                             </span>
 
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <p id='headline1'>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                               <!--   <i class="fa fa-compass fa-stack-1x text-primary"></i> -->
                             </span>
 
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <p id='headline2'>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
@@ -198,7 +198,7 @@
                     <!--             <i class="fa fa-flask fa-stack-1x text-primary"></i> -->
                             </span>
 
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <p id='headline3'>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                                 <a href="#" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
@@ -329,6 +329,7 @@ $(document).ready(function () {
                         //     'background-color':'red'}
                         //     );
                         window.location.hash = "#services";
+                        jdata = {};
                         $.ajax({
                             type: 'POST',
                             url: '/search_ppl',
@@ -337,12 +338,17 @@ $(document).ready(function () {
                             data: jdata,
                             crossDomain: true,
                             success:    function (json) {
+                                console.log(json);
                             for (var i = 0; i < json.length; i++) {
                                 var x = i+1;
                                 x = "#p" + x;
-                            $(x).attr('src', json.links[i].link.img_url);
+                                $(x).attr('src', json[i].img);
+                                $('p#headline'+x).html(json[i].headline);
                             };
 
+                            },
+                            error: function (request, status, error) {
+                                console.log(error);
                             }
                         })
                     },

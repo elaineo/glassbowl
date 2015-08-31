@@ -6,12 +6,10 @@ def publish_profiles(dict):
     r = requests.get(url)
     profiles = BeautifulSoup(r.content).findAll('li',{'class': 'item-container'})
     stuff = []
-    for p in profiles[:3]:
+    for p in profiles:
         href = p.find('a').fetch()['href']
-        print href
         img = p.find('img')['src']
-        print img
-        headline = p.find('p', {'class': 'headline'})
+        headline = p.find('p', {'class': 'headline'}).getText()
         stuff.append({'url': href, 'img': img, 'headline': headline})
     #divs = BeautifulSoup(r.content).find('div', {'id': b})
-    return stuff
+    return stuff[:3]

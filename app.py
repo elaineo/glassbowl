@@ -1,31 +1,25 @@
 from flask import Flask, render_template, request
 from query_tools import *
 from query_api import *
-import logging,logging.config, yaml
-logging.config.dictConfig(yaml.load(open('logging.conf')))
+from peer_puller import *
+
 
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 import json
 
-fakepeers={
-  "links": [
-    {"link": {
-    "Title": "Software Engineer",
-    "img_url":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/4/005/042/1a1/08b48ac.jpg",
-    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAAauYmQBGwCTxbICPCV-k53MsxyYuaGiOyw"
-  }},{"link": {
-    "Title": "Software Developer",
-     "img_url":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAMPAAAAJDQwMmRiMGJlLWNkNTgtNDAxNC1hN2UwLTNmNjY3OGEwYmRiNA.jpg",
-    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAAS-uHMBmmfUr8-urMQ0GGDu9odW3VYjK1w"
+fakepeers = [{ "headline": "Software Engineer",
+      "img":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/4/005/042/1a1/08b48ac.jpg",
+      "url": "https://www.linkedin.com/profile/view?id=ADEAAAauYmQBGwCTxbICPCV-k53MsxyYuaGiOyw"
+      },
+      { "headline": "Software Developer",
+     "img":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAMPAAAAJDQwMmRiMGJlLWNkNTgtNDAxNC1hN2UwLTNmNjY3OGEwYmRiNA.jpg",
+    "url": "https://www.linkedin.com/profile/view?id=ADEAAAS-uHMBmmfUr8-urMQ0GGDu9odW3VYjK1w"
+  },
+  { "headline": "Software Developer",
+     "img":"http://www.utexas.edu/cola/history/_files/images/people/graduation_speakers/ryan_maidie.jpg",
+    "url": "https://www.linkedin.com/profile/view?id=ADEAAA93W-MBpZgbhfh6gD2mcvbXZmVNZ9DurXs"
+  }]
 
-  }},
-    {"link": {
-    "Title": "Software Developer",
-     "img_url":"http://www.utexas.edu/cola/history/_files/images/people/graduation_speakers/ryan_maidie.jpg",
-    "profile_url": "https://www.linkedin.com/profile/view?id=ADEAAA93W-MBpZgbhfh6gD2mcvbXZmVNZ9DurXs"
-  }}
-  ]
-}
 # mysql = MySQL()
 
 # MySQL configurations
@@ -44,19 +38,26 @@ def search():
     data = request.data
     data = json.loads(data)
     url = data.get('url')
-    logconsole.debug(url)
     if url:
         r = search_query(url)
-        logconsole.debug(r)
         return json.dumps(r)
     else:
         return "error"
     
+@app.route('/search_ppl', methods=['GET', 'POST'])
+def search_ppl():
+    return json.dumps(fakepeers)
+    #data = request.data
+    #data = json.loads(data)
+    #logconsole.debug(data)
+    #if data:
+    #    r = publish_profiles(data)
+    #    logconsole.debug(r)
+    #    return json.dumps(r)
+    #else:
+    #    return "error"
+
 
 if __name__ == '__main__':
-    logfile    = logging.getLogger('file')
-    logconsole = logging.getLogger('console')
-    logfile.debug("Debug FILE")
-    logconsole.debug("Debug CONSOLE")
     app.run()
     # app.run(host='0.0.0.0')

@@ -17,12 +17,14 @@ def open_file(name):
 
 def search_query(url):
     data = pull_profile(url)
+    print data
     documents, dictionary, lsi, index = load_docs('linkedin')
 
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
-    idx = [sims[s][0] for s in range(0,10)]
+    idx = [sims[s][0] for s in range(0,12)]
+    print idx
 
     results = index_lookup(idx)
     rtokens = [r.split('/') for r in results]
@@ -30,9 +32,10 @@ def search_query(url):
 
     clean_res = [{'Company':r[2],'Title':r[3].split('.')[0]} for r in rtokens]
     jobs = getSalary(clean_res)
+    jobs = [j for j in jobs if "Lecturer" not in j["Title"]]
     min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
     results = {}
-    results['jobs'] = jobs
+    results['jobs'] = jobs[:10]
     results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True) 
     results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True) 
     results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True) 
@@ -80,6 +83,7 @@ boxes =['background-summary-container','background-experience-container',
        'background-education-container','background-honors-container']
 
 def pull_profile(url):
+    # this probably needs to be a selenium request
     r = requests.get(url)
     content = ""
     for b in boxes:
@@ -91,4 +95,5 @@ def pull_profile(url):
                 content += " ".join(d.strings) + " "
         except:
             continue
+    print content
     return content
