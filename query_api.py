@@ -5,6 +5,8 @@ import os
 import json
 from minidb import getSalary
 from bs4 import BeautifulSoup
+from selenium import webdriver
+
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US')
 
@@ -31,14 +33,15 @@ def search_query(url):
     #results = pull_linkedidx(idx)
 
     clean_res = [{'Company':r[2],'Title':r[3].split('.')[0]} for r in rtokens]
+    print clean_res
     jobs = getSalary(clean_res)
     jobs = [j for j in jobs if "Lecturer" not in j["Title"]]
     min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
     results = {}
     results['jobs'] = jobs[:10]
-    results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True) 
-    results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True) 
-    results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True) 
+    results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True)
+    results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True)
+    results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True)
     return results
 
 def calc_salary(salarylist):
@@ -58,7 +61,7 @@ def index_lookup(indices):
 
     with open(os.path.join(APP_ROOT, '%s-realidx.json' % name), 'r') as f:
         realidx = json.load(f)
-    
+
     with open(os.path.join(APP_ROOT, '%s-files.json' % name), 'r') as f:
         filelist = json.load(f)
 
@@ -83,17 +86,16 @@ boxes =['background-summary-container','background-experience-container',
        'background-education-container','background-honors-container']
 
 def pull_profile(url):
-    # this probably needs to be a selenium request
-    r = requests.get(url)
+    driver = webdriver.PhantomJS()
+    driver.set_window_size(1120, 550)
+    driver.get(url)
+    r = driver.find_element_by_tag_name("body")
+
     content = ""
     for b in boxes:
         try:
-            divs = BeautifulSoup(r.content).find('div', {'id': b})
-            for script in divs(["script", "style"]):
-                script.extract()    # rip it out   
-            for d in divs.findAll('div'):
-                content += " ".join(d.strings) + " "
+            d = r.find_element_by_id(b)
+            content += d.text + " "
         except:
             continue
-    print content
     return content
