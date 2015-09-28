@@ -29,18 +29,18 @@ def getSalary(dict_list):
 		title = dict["Title"]
 		cur.execute("SELECT Company,Title,Salary FROM Salaries WHERE Company=%s AND Title=%s", (company, title))
 		data = cur.fetchone()
-		dict_out["Company"] = data[0]	
+		dict_out["Company"] = data[0]
 		dict_out["Title"]=data[1]
 		dict_out["Salary"]=data[2]
 		dict_out_list.append(dict_out)
         return dict_out_list
 
-db1 = mdb.connect(host="localhost",user="root", db="mydata")
+db1 = mdb.connect(host="localhost",user="root", db="glass")
 cur = db1.cursor()
 
 #create table
 with db1:
-    
+
     cur.execute("DROP TABLE IF EXISTS Salaries")
     cur.execute("CREATE TABLE Salaries(Company VARCHAR(255), Title VARCHAR(255), Salary VARCHAR(255), Keywords INTEGER(255) AUTO_INCREMENT, PRIMARY KEY (Keywords))")
 

@@ -19,7 +19,6 @@ def open_file(name):
 
 def search_query(url):
     data = pull_profile(url)
-    print data
     documents, dictionary, lsi, index = load_docs('linkedin')
 
     sims = query_docs(data, dictionary, lsi, index)
@@ -86,7 +85,7 @@ boxes =['background-summary-container','background-experience-container',
        'background-education-container','background-honors-container']
 
 def pull_profile(url):
-    driver = webdriver.PhantomJS()
+    driver = webdriver.PhantomJS('/Users/elaine/Dropbox/linkedin/phantomjs/bin/phantomjs')
     driver.set_window_size(1120, 550)
     driver.get(url)
     r = driver.find_element_by_tag_name("body")
