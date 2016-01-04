@@ -8,30 +8,31 @@ import nltk
 import json
 import os
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+#APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+APP_ROOT = '/home/ubuntu'
 APP_DATA = os.path.join(APP_ROOT, 'data')
 
-with open(os.path.join(APP_ROOT, 'linkedin-files.json'), 'r') as f:
+with open(os.path.join(APP_DATA, 'linkedin-files.json'), 'r') as f:
     filelist = json.load(f)
 
 def open_file(name):
     with open(os.path.join(APP_DATA, name)) as f:
         f.read()
 
-def load_docs(name):
+def load_docs(name, root=APP_DATA):
     """ Load documents
             Preprocessed: dictionary, corpus, index, lsi
             Archives: documents
     """
     #corpus = corpora.MmCorpus('data/%s-corpus.mm'% name)
-    dictionary = corpora.Dictionary.load('%s.dict' % name)
+    dictionary = corpora.Dictionary.load('%s/%s.dict' % (root,name))
 
-    with open('%s-files.json' % name) as docs_file:
+    with open('%s/%s-files.json' % (root,name)) as docs_file:
         documents = json.load(docs_file)
 
-    lsi = models.LsiModel.load('%s-corpus.lsi' % name)
+    lsi = models.LsiModel.load('%s/%s-corpus.lsi' % (root,name))
 
-    index = similarities.Similarity.load('%s-corpus.index' % name)
+    index = similarities.Similarity.load('%s/%s-corpus.index' % (root,name))
 
     return documents, dictionary, lsi, index
 
@@ -53,13 +54,13 @@ def query_docs(texts, dictionary, lsi, index):
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
     return sims
 
-def preprocess(name, num_topics=512):
+def preprocess(name, num_topics=512, root=APP_DATA):
     """
         Generate corpus, dictionary, lsi, index
         this takes a long time to run
     """
 
-    with open('%s-files.json' % name) as docs_file:
+    with open('%s/%s-files.json' % (root,name)) as docs_file:
         documents = json.load(docs_file)
 
     dictionary = corpora.Dictionary(nltk.word_tokenize(doc.lower()) for doc in
@@ -74,21 +75,21 @@ def preprocess(name, num_topics=512):
 
     dictionary.filter_tokens(stop_ids + once_ids) # remove stop words and words that appear only once
     dictionary.compactify()
-    dictionary.save('%s.dict' % name) # store the dictionary
+    dictionary.save('%s/%s.dict' % (root,name)) # store the dictionary
 
     corpus0 = LinkedCorpus()
     tfidf = models.TfidfModel(corpus0)
     corpus = tfidf[corpus0]
-    corpora.MmCorpus.serialize('%s.mm' % name, corpus)
-    corpus = corpora.MmCorpus('%s.mm' % name)
+    corpora.MmCorpus.serialize('%s/%s.mm' % (root,name), corpus)
+    corpus = corpora.MmCorpus('%s/%s.mm' % (root,name))
 
     lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=num_topics)
-    lsi.save('%s-corpus.lsi' % name)
+    lsi.save('%s/%s-corpus.lsi' % (root,name))
 
-    index = similarities.Similarity('%s.index' % name, lsi[corpus],
+    index = similarities.Similarity('%s/%s.index' % (root,name), lsi[corpus],
         num_features=corpus.num_terms)
 
-    index.save('%s-corpus.index' % name)
+    index.save('%s/%s-corpus.index' % (root,name))
 
 class LinkedCorpus(object):
      def __iter__(self):
