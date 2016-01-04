@@ -1,7 +1,7 @@
 import MySQLdb as mdb
 
 def getInfo(index):
-    db1 = mdb.connect(host="localhost",user="root", db="mydata")
+    db1 = mdb.connect(host="localhost",user="root",passwd="1234", db="mydata")
     cur = db1.cursor()
     dict = {}
     cur.execute("SELECT Company,Title,Salary FROM Salaries WHERE Keywords=%s", (index))
@@ -12,7 +12,7 @@ def getInfo(index):
     return dict
 
 def getSalary(dict_list):
-    db1 = mdb.connect(host="localhost",user="root", db="mydata")
+    db1 = mdb.connect(host="localhost",user="root",passwd="1234", db="mydata")
     cur = db1.cursor()
     dict_out_list = []
     for dict in dict_list:
