@@ -1,16 +1,15 @@
-# import MySQLdb as db
+import MySQLdb as db
 from query_tools import *
 import requests
 import os
 import json
 from minidb import getSalary
 from bs4 import BeautifulSoup
-from selenium import webdriver
-
 import locale
-locale.setlocale(locale.LC_ALL, 'en_US')
+locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+#APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+APP_ROOT = '/home/ubuntu'
 APP_DATA = os.path.join(APP_ROOT, 'data')
 
 def open_file(name):
@@ -19,28 +18,25 @@ def open_file(name):
 
 def search_query(url):
     data = pull_profile(url)
-    documents, dictionary, lsi, index = load_docs('linkedin')
+    documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
 
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
-    idx = [sims[s][0] for s in range(0,12)]
-    print idx
+    idx = [sims[s][0] for s in range(0,10)]
 
     results = index_lookup(idx)
     rtokens = [r.split('/') for r in results]
     #results = pull_linkedidx(idx)
 
     clean_res = [{'Company':r[2],'Title':r[3].split('.')[0]} for r in rtokens]
-    print clean_res
     jobs = getSalary(clean_res)
-    jobs = [j for j in jobs if "Lecturer" not in j["Title"]]
     min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
     results = {}
-    results['jobs'] = jobs[:10]
-    results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True)
-    results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True)
-    results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True)
+    results['jobs'] = jobs
+    results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True) 
+    results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True) 
+    results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True) 
     return results
 
 def calc_salary(salarylist):
@@ -58,10 +54,10 @@ def calc_salary(salarylist):
 def index_lookup(indices):
     name = 'linkedin'
 
-    with open(os.path.join(APP_ROOT, '%s-realidx.json' % name), 'r') as f:
+    with open(os.path.join(APP_DATA, '%s-realidx.json' % name), 'r') as f:
         realidx = json.load(f)
-
-    with open(os.path.join(APP_ROOT, '%s-files.json' % name), 'r') as f:
+    
+    with open(os.path.join(APP_DATA, '%s-files.json' % name), 'r') as f:
         filelist = json.load(f)
 
     r = [filelist[realidx[i]] for i in indices]
@@ -85,16 +81,15 @@ boxes =['background-summary-container','background-experience-container',
        'background-education-container','background-honors-container']
 
 def pull_profile(url):
-    driver = webdriver.PhantomJS('/Users/elaine/Dropbox/linkedin/phantomjs/bin/phantomjs')
-    driver.set_window_size(1120, 550)
-    driver.get(url)
-    r = driver.find_element_by_tag_name("body")
-
+    r = requests.get(url)
     content = ""
     for b in boxes:
         try:
-            d = r.find_element_by_id(b)
-            content += d.text + " "
+            divs = BeautifulSoup(r.content).find('div', {'id': b})
+            for script in divs(["script", "style"]):
+                script.extract()    # rip it out   
+            for d in divs.findAll('div'):
+                content += " ".join(d.strings) + " "
         except:
             continue
     return content
