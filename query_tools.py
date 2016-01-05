@@ -92,7 +92,7 @@ def preprocess(name, num_topics=512, root=APP_DATA):
     index.save('%s/%s-corpus.index' % (root,name))
 
 class LinkedCorpus(object):
-     def __iter__(self):
+    def __iter__(self):
         name='linkedin'
         dictionary = corpora.Dictionary.load('%s.dict' % name)
         for f in filelist:
@@ -104,7 +104,7 @@ class LinkedCorpus(object):
 
 def get_profiles(files):
     for f in files:
-        with open(f, 'r') as openf:
+        with open(APP_DATA + f, 'r') as openf:
             x = json.load(openf)
             for profile in x['profiles'][:2]:
                 yield profile
