@@ -1,5 +1,11 @@
 import dryscrape
 from bs4 import BeautifulSoup
+import logging
+
+logger = logging.getLogger("linkedin")
+hdlr = logging.FileHandler('/tmp/linkedin.log')
+logger.addHandler(hdlr)
+logger.setLevel(logging.INFO)
 
 dryscrape.start_xvfb()
 session = dryscrape.Session()
@@ -21,13 +27,15 @@ boxes =['background-summary-container','background-experience-container',
 
 def pull_profile(url):
     session.visit(url)
-    r = session.body()
     content = ""
     for b in boxes:
         try:
             divs = session.at_xpath('//div[@id="%s"]' % b)  
+            logger.info(divs.text())
             for d in divs.xpath('//div[@id="%s"]/div' % b):
                 content += d.text() + " "
         except:
             continue
+    content = content.replace("\n", " ")
+    content = content.replace("\xa0", " ")
     return content
