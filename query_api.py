@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 import logging
+import dryscrape
 
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_ROOT = '/home/ubuntu'
@@ -78,19 +79,21 @@ def pull_linkedidx(indices):
     conn.close()
     return results
 
-boxes =['background-summary-container','background-experience-container',
-        'background-languages-container', 'background-skills-container',
-       'background-education-container','background-honors-container']
+boxes =['summary','experience',
+        'languages', 'skills',
+       'education','honors']
 
 def pull_profile(url):
-    r = requests.get(url)
+    session = dryscrape.Session()
+    session.visit(url)
+    r = session.body()
     content = ""
     for b in boxes:
         try:
-            divs = BeautifulSoup(r.content).find('div', {'id': b})
+            divs = BeautifulSoup(r).find('section', {'id': b})
             for script in divs(["script", "style"]):
                 script.extract()    # rip it out   
-            for d in divs.findAll('div'):
+            for d in divs:
                 content += " ".join(d.strings) + " "
         except:
             continue
