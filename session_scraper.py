@@ -15,9 +15,9 @@ button = session.at_xpath('//*[@name="submit"]')
 button.click()
 
 
-boxes =['summary','experience',
-        'languages', 'skills',
-       'education','honors']
+boxes =['background-summary-container','background-experience-container',
+        'background-languages-container', 'background-skills-container',
+       'background-education-container','background-honors-container']
 
 def pull_profile(url):
     session.visit(url)
@@ -25,11 +25,9 @@ def pull_profile(url):
     content = ""
     for b in boxes:
         try:
-            divs = BeautifulSoup(r).find('section', {'id': b})
-            for script in divs(["script", "style"]):
-                script.extract()    # rip it out   
-            for d in divs:
-                content += " ".join(d.strings) + " "
+            divs = session.at_xpath('//div[@id="%s"]' % b)  
+            for d in divs.xpath('//div[@id="%s"]/div' % b):
+                content += div.text() + " "
         except:
             continue
     return content
