@@ -4,11 +4,10 @@ import requests
 import os
 import json
 from minidb import getSalary
-from bs4 import BeautifulSoup
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 import logging
-import dryscrape
+from session_scraper import pull_profile
 
 logger = logging.getLogger("linkedin")
 hdlr = logging.FileHandler('/tmp/linkedin.log')
@@ -85,23 +84,3 @@ def pull_linkedidx(indices):
     conn.close()
     return results
 
-boxes =['summary','experience',
-        'languages', 'skills',
-       'education','honors']
-
-def pull_profile(url):
-    dryscrape.start_xvfb()
-    session = dryscrape.Session()
-    session.visit(url)
-    r = session.body()
-    content = ""
-    for b in boxes:
-        try:
-            divs = BeautifulSoup(r).find('section', {'id': b})
-            for script in divs(["script", "style"]):
-                script.extract()    # rip it out   
-            for d in divs:
-                content += " ".join(d.strings) + " "
-        except:
-            continue
-    return content
