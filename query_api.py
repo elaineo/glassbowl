@@ -9,6 +9,11 @@ import locale
 locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 import logging
 
+logger = logging.getLogger("linkedin")
+hdlr = logging.FileHandler('/tmp/linkedin.log')
+logger.addHandler(hdlr)
+logger.setLevel(logging.INFO)
+
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_ROOT = '/home/ubuntu'
 APP_DATA = os.path.join(APP_ROOT, 'data')
@@ -20,12 +25,13 @@ def open_file(name):
 def search_query(url):
     data = pull_profile(url)
     documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
+    logger.info(data)
 
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
     idx = [sims[s][0] for s in range(0,10)]
-    logging.info(idx)
+    logger.info(idx)
 
     results = index_lookup(idx)
     rtokens = [r.split('/') for r in results]
