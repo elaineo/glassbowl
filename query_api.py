@@ -90,6 +90,7 @@ boxes =['summary','experience',
        'education','honors']
 
 def pull_profile(url):
+    dryscrape.start_xvfb()
     session = dryscrape.Session()
     session.visit(url)
     r = session.body()
