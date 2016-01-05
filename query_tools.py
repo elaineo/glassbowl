@@ -94,9 +94,9 @@ def preprocess(name, num_topics=512, root=APP_DATA):
 class LinkedCorpus(object):
     def __iter__(self):
         name='linkedin'
-        dictionary = corpora.Dictionary.load('%s.dict' % name)
+        dictionary = corpora.Dictionary.load('%s/%s.dict' % (APP_DATA,name))
         for f in filelist:
-            with open(f, 'r') as openf:
+            with open("%s/%s" % (APP_DATA, f), 'r') as openf:
                 x = json.load(openf)
                 for profile in x['profiles'][:2]:
                     t = nltk.word_tokenize(profile.lower())
