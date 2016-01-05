@@ -7,6 +7,7 @@ from minidb import getSalary
 from bs4 import BeautifulSoup
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+import logging
 
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_ROOT = '/home/ubuntu'
@@ -24,6 +25,7 @@ def search_query(url):
 
     #get 10 best matches
     idx = [sims[s][0] for s in range(0,10)]
+    logging.info(idx)
 
     results = index_lookup(idx)
     rtokens = [r.split('/') for r in results]
