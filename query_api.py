@@ -1,4 +1,4 @@
-import MySQLdb as db
+#import MySQLdb as db
 from query_tools import *
 import requests
 import os
@@ -72,7 +72,7 @@ def index_lookup(indices):
     return r
 
 def pull_linkedidx(indices):
-    conn = db.connect('localhost', 'root', '', 'mydata')
+    conn = db.connect('localhost', 'root', '1234', 'mydata')
     with conn:
         cur = conn.cursor()
         results = []
