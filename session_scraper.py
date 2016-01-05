@@ -27,7 +27,7 @@ def pull_profile(url):
         try:
             divs = session.at_xpath('//div[@id="%s"]' % b)  
             for d in divs.xpath('//div[@id="%s"]/div' % b):
-                content += div.text() + " "
+                content += d.text() + " "
         except:
             continue
     return content
