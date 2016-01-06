@@ -20,6 +20,7 @@ def pull_profile(url):
 
     # Get George set up
     session.visit("https://www.linkedin.com")
+    logger.info(session.body())
     # log in
     q = session.at_xpath('//*[@id="login-email"]')
     q.set('george@sandhill.exchange')
