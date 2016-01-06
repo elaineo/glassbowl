@@ -23,6 +23,7 @@ def open_file(name):
         f.read()
 
 def search_query(url):
+    logger.info(url)
     data = pull_profile(url)
     documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
 
@@ -30,7 +31,6 @@ def search_query(url):
 
     #get 10 best matches
     idx = [sims[s][0] for s in range(0,13)]
-    logger.info(idx)
 
     results = index_lookup(idx)
     # clean results
@@ -38,6 +38,7 @@ def search_query(url):
     results = [r for r in results if "Intern" not in r]
     results = [r for r in results if "Hourly" not in r]
     results = [r for r in results if "Monthly" not in r]
+    results = [r for r in results if "Visiting" not in r]
     rtokens = [r.split('/') for r in results]
     #results = pull_linkedidx(idx)
 
