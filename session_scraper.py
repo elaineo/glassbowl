@@ -17,10 +17,8 @@ boxes =['background-summary-container','background-experience-container',
 def pull_profile(url):
     dryscrape.start_xvfb()
     session = dryscrape.Session()
-
     # Get George set up
     session.visit("https://www.linkedin.com")
-    logger.info(session.body())
     # log in
     q = session.at_xpath('//*[@id="login-email"]')
     q.set('george@sandhill.exchange')
@@ -30,15 +28,11 @@ def pull_profile(url):
     button.click()
     session.visit(url)
     content = ""
-    logger.info(session.body())
     for b in boxes:
         try:
             divs = session.at_xpath('//div[@id="%s"]' % b)  
-            logger.info(divs.text())
             for d in divs.xpath('//div[@id="%s"]/div' % b):
                 content += d.text() + " "
         except:
             continue
-    content = content.replace("\n", " ")
-    content = content.replace("\xa0", " ")
     return content
