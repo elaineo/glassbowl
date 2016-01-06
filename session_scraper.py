@@ -28,6 +28,7 @@ boxes =['background-summary-container','background-experience-container',
 def pull_profile(url):
     session.visit(url)
     content = ""
+    logger.info(session.body())
     for b in boxes:
         try:
             divs = session.at_xpath('//div[@id="%s"]' % b)  
