@@ -42,7 +42,7 @@ def query_docs(texts, dictionary, lsi, index):
     """Input: a pile of text from the profile
 
     """
-    clean_input = clean_text(nltk.word_tokenize(texts.lower()))
+    clean_input = clean_text(texts)
     vec_bow = dictionary.doc2bow(clean_input)
     vec_lsi = lsi[vec_bow] # convert the query to LSI space
 
@@ -60,7 +60,8 @@ garbage = ['summary', 'experience', 'languages', 'skills', 'education', 'honors'
             '(', ')', '...', ':', ';', ',', '.']
 stopwords = nltk.corpus.stopwords.words('english') + garbage
 
-def clean_text(texts):
+def clean_text(doc):
+    texts = nltk.word_tokenize(doc.lower())
     # remove numbers
     text_nnum = [t for t in texts if not t.isdigit()]
     return [t for t in text_nnum if t not in stopwords]
@@ -74,15 +75,15 @@ def preprocess(name, num_topics=512, root=APP_DATA):
     with open('%s/%s-files.json' % (root,name)) as docs_file:
         documents = json.load(docs_file)
 
-    dictionary = corpora.Dictionary(nltk.word_tokenize(doc.lower()) for doc in
+    dictionary = corpora.Dictionary(clean_text(doc) for doc in
         get_profiles(documents))
 
     # remove stopwords for each corpus and tokenize
-    stop_ids = [dictionary.token2id[stopword] for stopword in stopwords
-             if stopword in dictionary.token2id]
+    # stop_ids = [dictionary.token2id[stopword] for stopword in stopwords
+    #         if stopword in dictionary.token2id]
     once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
 
-    dictionary.filter_tokens(stop_ids + once_ids) # remove stop words and words that appear only once
+    dictionary.filter_tokens(once_ids) # remove stop words and words that appear only once
     dictionary.compactify()
     dictionary.save('%s/%s.dict' % (root,name)) # store the dictionary
 
