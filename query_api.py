@@ -36,6 +36,8 @@ def search_query(url):
     # clean results
     results = [r for r in results if "Contractor" not in r]
     results = [r for r in results if "Intern" not in r]
+    results = [r for r in results if "Hourly" not in r]
+    results = [r for r in results if "Monthly" not in r]
     rtokens = [r.split('/') for r in results]
     #results = pull_linkedidx(idx)
 
