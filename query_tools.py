@@ -42,7 +42,8 @@ def query_docs(texts, dictionary, lsi, index):
     """Input: a pile of text from the profile
 
     """
-    vec_bow = dictionary.doc2bow(nltk.word_tokenize(texts.lower()))
+    clean_input = clean_text(nltk.word_tokenize(texts.lower()))
+    vec_bow = dictionary.doc2bow(clean_input)
     vec_lsi = lsi[vec_bow] # convert the query to LSI space
 
     s = sorted(vec_lsi, key=lambda item: -item[1])
@@ -54,6 +55,12 @@ def query_docs(texts, dictionary, lsi, index):
     # sort similarities in descending order
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
     return sims
+
+garbage = ['summary', 'experience', 'languages', 'skills', 'education', 'honors']
+stopwords = nltk.corpus.stopwords.words('english') + garbage
+
+def clean_text(texts):
+    return [t for t in texts if t not in stopwords]
 
 def preprocess(name, num_topics=512, root=APP_DATA):
     """
@@ -68,8 +75,6 @@ def preprocess(name, num_topics=512, root=APP_DATA):
         get_profiles(documents))
 
     # remove stopwords for each corpus and tokenize
-    garbage = ['summary', 'experience', 'languages', 'skills', 'education', 'honors']
-    stopwords = nltk.corpus.stopwords.words('english') + garbage
     stop_ids = [dictionary.token2id[stopword] for stopword in stopwords
              if stopword in dictionary.token2id]
     once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
