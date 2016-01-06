@@ -56,11 +56,14 @@ def query_docs(texts, dictionary, lsi, index):
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
     return sims
 
-garbage = ['summary', 'experience', 'languages', 'skills', 'education', 'honors']
+garbage = ['summary', 'experience', 'languages', 'skills', 'education', 'honors', \
+            '(', ')', '...', ':', ';', ',', '.']
 stopwords = nltk.corpus.stopwords.words('english') + garbage
 
 def clean_text(texts):
-    return [t for t in texts if t not in stopwords]
+    # remove numbers
+    text_nnum = [t for t in texts if not t.isdigit()]
+    return [t for t in text_nnum if t not in stopwords]
 
 def preprocess(name, num_topics=512, root=APP_DATA):
     """
