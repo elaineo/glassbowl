@@ -17,6 +17,19 @@ body {
 	text-shadow: none;
 }
 
+button.wait {
+    color: transparent !important;
+    border: 0 !important;
+    background: url('../img/283.gif') no-repeat scroll 0 0 transparent !important;
+    height: 100px;
+    z-index:100;
+    position: absolute;
+    margin-left:30%;
+    margin-bottom:0px;
+    bottom: -20px;
+    cursor: wait !important;
+}
+
 .clear {
 	clear: both;
 }

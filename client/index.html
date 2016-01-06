@@ -51,7 +51,7 @@
 			            <br>
         <form method="post" action="/search">
         <input  id="inputurl" class="form-control" type = "text" name="linkedin_url" placeholder = "Linkedin URL - eg. https://www.linkedin.com/in/elaineo">
-        <input href="#services" class="form-control" id="go_form" type="submit" value="Go!">
+        <button href="#services" class="form-control button" id="search_btn" type="submit">Go!</button>
         </form>
 						</div>
 					</div>
@@ -97,8 +97,8 @@
 						<div class="section-header">
 							<h2 class="section-heading animated" data-animation="bounceInUp">People with Your Experience</h2>
                     		<div id="ave_sal"></div>
-                   			<table id="stage" class = "table-striped table"></table>
 						</div>
+                        <table id="stage" class = "table-striped table"></table>
 					</div>
 				</div>
 				
@@ -207,10 +207,16 @@
 <script>
 
 $(document).ready(function () {
-    $("#go_form").click(function getresponse(e){
-        window.location.hash = "/";
+    $("#search_btn").click(function getresponse(e){
         e.preventDefault();
+        $("#search_btn").attr('disabled', 'disabled');
+        $("#search_btn").addClass('wait');
         var jdata = JSON.stringify({'url': $("#inputurl").val()});
+        $("#inputurl").val("");
+
+        window.location.hash='';
+
+        
         $("#ave_sal").html("");
           $.ajax({
             type: 'POST',
@@ -220,44 +226,22 @@ $(document).ready(function () {
             data: jdata,
             crossDomain: true,
             success:    function (res) {
-                    $("#stage").html("");
-                    $("#ave_sal").html("<h4>How are they doing?</h4><h5><b>min</b>: " + res.min_salary+" | <b>max</b>: "+res.max_salary+" | <b>average</b>: "+res.ave_salary+"</h5>");
-                        
-                        $("#stage").append("<tr><td>Position</td><td>Employer</td><td>Salary</td></tr>");
+                $("#stage").html("");
+                $("#ave_sal").html("<h4>How are they doing?</h4><h5><b>min</b>: " + res.min_salary+" | <b>max</b>: "+res.max_salary+" | <b>average</b>: "+res.ave_salary+"</h5>");
+                    
+                    $("#stage").append("<tr><th>Position</th><th>Employer</th><th>Salary</th></tr>");
 
-                        json = res.jobs;
-                        for (var i = 0; i < json.length; i++) {
-                            $("#stage").append("<tr>",
-                                "<td>" + json[i].Title, "<td>" + json[i].Company,
-                                '<td align="right">' + json[i].Salary)
-                        };
-                        // $("#stage").css({
-                        //     'background-color':'red'}
-                        //     );
-                        window.location.hash = "#services";
-                        jdata = {};
-                        $.ajax({
-                            type: 'POST',
-                            url: '/search_ppl',
-                            dataType: "json",
-                            contentType: "json/application",
-                            data: jdata,
-                            crossDomain: true,
-                            success:    function (json) {
-                                console.log(json);
-                            for (var i = 0; i < json.length; i++) {
-                                var x = i+1;
-                                x = "#p" + x;
-                                $(x).attr('src', json[i].img);
-                                $('p#headline'+x).html(json[i].headline);
-                            };
-
-                            },
-                            error: function (request, status, error) {
-                                console.log(error);
-                            }
-                        })
-                    },
+                    json = res.jobs;
+                    for (var i = 0; i < json.length; i++) {
+                        $("#stage").append("<tr>",
+                            "<td>" + json[i].Title, "<td>" + json[i].Company,
+                            '<td align="right">' + json[i].Salary)
+                    };
+                    
+                     $('#search_btn').removeAttr('disabled');
+                    $('#search_btn').removeClass('wait');   
+                    window.location.hash = "services";
+                },
             error: function (request, status, error) {
                 alert(error);
             }
@@ -266,6 +250,7 @@ $(document).ready(function () {
     })
 
 });
+
 </script>
 	<a href="#header" class="scrollup"><i class="fa fa-chevron-up"></i></a>	
 
