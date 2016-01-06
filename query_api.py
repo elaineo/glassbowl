@@ -30,10 +30,12 @@ def search_query(url):
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
-    idx = [sims[s][0] for s in range(0,10)]
-    logger.info(idx)
+    idx = [sims[s][0] for s in range(0,15)]
 
     results = index_lookup(idx)
+    # clean results
+    results = [r for r in results if "Contractor" not in r]
+    results = [r for r in results if "Intern" not in r]
     rtokens = [r.split('/') for r in results]
     #results = pull_linkedidx(idx)
 
