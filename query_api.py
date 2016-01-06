@@ -25,12 +25,12 @@ def open_file(name):
 def search_query(url):
     data = pull_profile(url)
     documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
-    logger.info(data)
 
     sims = query_docs(data, dictionary, lsi, index)
 
     #get 10 best matches
     idx = [sims[s][0] for s in range(0,10)]
+    logger.info(idx)
 
     results = index_lookup(idx)
     # clean results
