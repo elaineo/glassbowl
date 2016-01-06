@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="static/css/style.css">
 		<!-- skin -->
 		<link rel="stylesheet" href="static/skin/default.css">
+        <link rel="icon" type="image/png" href="static/favicon.ico">
     </head>
 	 
     <body>
@@ -46,12 +47,13 @@
 					<div class="col-md-6 col-md-offset-3">
 						
 						<div class="align-center">
-							<h2 class="slogan">Your Job Sucks</h2>
+							<h2 class="slogan">You Deserve an Inflated Tech Salary</h2>
 							<h3>Are you getting paid enough?</h3>	
 			            <br>
         <form method="post" action="/search">
         <input  id="inputurl" class="form-control" type = "text" name="linkedin_url" placeholder = "Linkedin URL - eg. https://www.linkedin.com/in/elaineo">
         <button href="#services" class="form-control button" id="search_btn" type="submit">Go!</button>
+        <br><span id="wait_text"></span>
         </form>
 						</div>
 					</div>
@@ -68,8 +70,8 @@
 					<div class="align-center">
 						<i class="fa fa-user-md fa-3x mar-bot20"></i>
 						<h2>What is this abomination?</h2>
-                        <p>It's a tool that has collected every Bay Area profile from LinkedIn, and matched the users' current job title to salary estimates on GlassDoor. </p>
-                        <p>When you enter your profile, it finds the nearest profiles by cosine similarity. This generates your job title suggestions.
+                        <p>It's a tool that has collected every Bay Area profile from LinkedIn, and matched the users' current job title to salary estimates on GlassDoor. Profiles are decomposed and stored using Latent Semantic Indexing. </p>
+                        <p>When you enter your profile, it finds the nearest profiles by cosine similarity. This generates your job title suggestions. From there, it returns the corresponding expected salary.
                         </p>
                     <h4 class="lead">Want a raise? Let GlassBowl do the negotiating for you.</h4>
 					</div>
@@ -211,6 +213,7 @@ $(document).ready(function () {
         e.preventDefault();
         $("#search_btn").attr('disabled', 'disabled');
         $("#search_btn").addClass('wait');
+        $("#wait_text").html("It can take a minute to pull your info from LinkedIn...");
         var url = $("#inputurl").val().replace(/\s+/g, '');
         var jdata = JSON.stringify({'url': url});
         $("#inputurl").val("");
@@ -241,6 +244,7 @@ $(document).ready(function () {
                     
                      $('#search_btn').removeAttr('disabled');
                     $('#search_btn').removeClass('wait');   
+                    $("#wait_text").html("");
                     window.location.hash = "services";
                 },
             error: function (request, status, error) {
