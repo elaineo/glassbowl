@@ -46,7 +46,7 @@
 					<div class="col-md-6 col-md-offset-3">
 						
 						<div class="align-center">
-							<h2 class="slogan">Bridge the Wage Gap</h2>
+							<h2 class="slogan">Your Job Sucks</h2>
 							<h3>Are you getting paid enough?</h3>	
 			            <br>
         <form method="post" action="/search">
@@ -211,7 +211,8 @@ $(document).ready(function () {
         e.preventDefault();
         $("#search_btn").attr('disabled', 'disabled');
         $("#search_btn").addClass('wait');
-        var jdata = JSON.stringify({'url': $("#inputurl").val()});
+        var url = $("#inputurl").val().replace(/\s+/g, '');
+        var jdata = JSON.stringify({'url': url});
         $("#inputurl").val("");
 
         window.location.hash='';
