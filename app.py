@@ -33,7 +33,7 @@ def search():
         return json.dumps({'status': "error"})
     url = data.get('url')
     if url:
-        r = search_query(url)
+        r = search_query(url.strip())
         return json.dumps(r)
     else:
         return json.dumps({'status': "error"})
