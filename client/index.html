@@ -98,6 +98,7 @@
 				<div class="row mar-bot40">
 					<div class="col-md-offset-3 col-md-6">
 						<div class="section-header">
+                        <h4 id="linkedin_name"></h4>
 							<h2 class="section-heading animated" data-animation="bounceInUp">People with Your Experience</h2>
                     		<div id="ave_sal"></div>
 						</div>
@@ -231,6 +232,15 @@ $(document).ready(function () {
             data: jdata,
             crossDomain: true,
             success:    function (res) {
+                 $('#search_btn').removeAttr('disabled');
+                $('#search_btn').removeClass('wait');   
+                $("#wait_text").html("");
+                window.location.hash = "services";
+                if (res.status == "error") {
+                    alert("Oops! LinkedIn error. Please check your url. Or my server probably got blocked.");
+                    return
+                }
+                $("#linkedin_name").html(res.li_name)
                 $("#stage").html("");
                 $("#ave_sal").html("<h4>How are they doing?</h4><h5><b>min</b>: " + res.min_salary+" | <b>max</b>: "+res.max_salary+" | <b>average</b>: "+res.ave_salary+"</h5>");
                     
@@ -243,10 +253,6 @@ $(document).ready(function () {
                             '<td align="right">' + json[i].Salary)
                     };
                     
-                     $('#search_btn').removeAttr('disabled');
-                    $('#search_btn').removeClass('wait');   
-                    $("#wait_text").html("");
-                    window.location.hash = "services";
                 },
             error: function (request, status, error) {
                 alert(error);

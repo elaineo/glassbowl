@@ -25,8 +25,16 @@ boxes =['background-summary-container','background-experience-container',
        'background-education-container','background-honors-container']
 
 def pull_profile(url):
-    session.visit(url)
+    try:
+        session.visit(url)
+    except:
+        return None, None
     content = ""
+    name_div = session.at_xpath('//h1[@id="name"]')
+    if not name_div:
+        return None, None
+    else:
+        name = name_div.text()
     for b in boxes:
         try:
             divs = session.at_xpath('//div[@id="%s"]' % b)  
@@ -34,4 +42,4 @@ def pull_profile(url):
                 content += d.text() + " "
         except:
             continue
-    return content
+    return content, name
