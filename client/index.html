@@ -237,7 +237,7 @@ $(document).ready(function () {
                 $("#wait_text").html("");
                 window.location.hash = "services";
                 if (res.status == "error") {
-                    alert("Oops! LinkedIn error. Please check your url. Or my server probably got blocked.");
+                    alert("Oops! LinkedIn error. Please check your url.");
                     return
                 }
                 $("#linkedin_name").html('<a href="' + url + '">' + res.li_name + '</a>');

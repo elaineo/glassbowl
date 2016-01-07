@@ -4,6 +4,7 @@ from query_api import *
 import logging,sys
 from peer_puller import *
 
+
 app = Flask(__name__,  template_folder='client', static_folder='client/static')
 import json
 app.config['FLASK_LOG_LEVEL'] = 'DEBUG'
@@ -26,14 +27,20 @@ def home():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     data = request.data
-    data = json.loads(data)
+    try:
+        data = json.loads(data)
+    except:
+        return {'status': "error"}
     url = data.get('url')
     if url:
         r = search_query(url)
         return json.dumps(r)
     else:
-        return "error"
+        return {'status': "error"}
     
+LI_ACCESS_URL = "https://www.linkedin.com/uas/oauth2/accessToken"
+
+
 
 if __name__ == '__main__':
     app.run()
