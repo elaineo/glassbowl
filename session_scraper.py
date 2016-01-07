@@ -30,7 +30,7 @@ def pull_profile(url):
     except:
         return None, None
     content = ""
-    name_div = session.at_xpath('//h1[@id="name"]')
+    name_div = session.at_xpath('//span[@class="full-name"]')
     if not name_div:
         return None, None
     else:
