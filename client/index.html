@@ -240,7 +240,7 @@ $(document).ready(function () {
                     alert("Oops! LinkedIn error. Please check your url. Or my server probably got blocked.");
                     return
                 }
-                $("#linkedin_name").html(res.li_name)
+                $("#linkedin_name").html('<a href="' + url + '">' + res.li_name + '</a>');
                 $("#stage").html("");
                 $("#ave_sal").html("<h4>How are they doing?</h4><h5><b>min</b>: " + res.min_salary+" | <b>max</b>: "+res.max_salary+" | <b>average</b>: "+res.ave_salary+"</h5>");
                     
