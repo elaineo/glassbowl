@@ -30,13 +30,13 @@ def search():
     try:
         data = json.loads(data)
     except:
-        return {'status': "error"}
+        return json.dumps({'status': "error"})
     url = data.get('url')
     if url:
         r = search_query(url)
         return json.dumps(r)
     else:
-        return {'status': "error"}
+        return json.dumps({'status': "error"})
     
 LI_ACCESS_URL = "https://www.linkedin.com/uas/oauth2/accessToken"
 
