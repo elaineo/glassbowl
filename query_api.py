@@ -26,7 +26,6 @@ def search_query(url):
     logger.info(url)
     data, name = pull_profile(url)
     if not data or not name:
-        logger.info("ERROR! Maybe restart?")
         return {'status': "error"}
     documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
 

@@ -28,10 +28,12 @@ def pull_profile(url):
     try:
         session.visit(url)
     except:
+        logger.info("ERROR! Access denied.")
         return None, None
     content = ""
     name_div = session.at_xpath('//span[@class="full-name"]')
     if not name_div:
+        logger.info("ERROR! Maybe restart?")
         return None, None
     else:
         name = name_div.text()
