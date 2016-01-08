@@ -43,5 +43,5 @@ LI_ACCESS_URL = "https://www.linkedin.com/uas/oauth2/accessToken"
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True)
     # app.run(host='0.0.0.0')
