@@ -55,7 +55,7 @@
         <button href="#services" class="form-control button" id="search_btn" type="submit">Go!</button>
         <br><span id="wait_text"></span>
         </form><br>
-        <p><a style="color:#fff;text-decoration:underline" href="#" id="linkedin_fix">If you are getting LinkedIn errors, click here to just submit your profile as plain text.</a></p>
+        <p><a style="color:#fff;text-decoration:underline" href="#" id="linkedin_fix">If you still get LinkedIn errors, click here to just submit your profile as plain text.</a></p>
          <form method="post" id="input_form" style="display:none" action="/send_text">
         <textarea  id="inputtext" class="form-control" type="text" rows=8>
             Paste the text of your LinkedIn profile here.
@@ -242,7 +242,7 @@ $(document).ready(function () {
                 $('#input_btn').removeClass('wait');   
                 window.location.hash = "services";
                 if (res.status == "error") {
-                    alert("Oops! LinkedIn error. Please check your url.");
+                    alert("Oops! LinkedIn error. Please check your url. \n\nPlease note: International LinkedIn urls currently not supported. ie, instead of jp.linkedin.com or in.linkedin.com, use www.linkedin.com");
                     return
                 }
                 $("#stage").html("");
