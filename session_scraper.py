@@ -1,6 +1,7 @@
 import dryscrape
 from bs4 import BeautifulSoup
 import logging
+from datetime import datetime, timedelta
 
 logger = logging.getLogger("linkedin")
 hdlr = logging.FileHandler('/tmp/linkedin.log')
@@ -9,15 +10,21 @@ logger.setLevel(logging.INFO)
 
 dryscrape.start_xvfb()
 session = dryscrape.Session()
-# Get George set up
-session.visit("https://www.linkedin.com")
-# log in
-q = session.at_xpath('//*[@id="login-email"]')
-q.set('george@sandhill.exchange')
-q = session.at_xpath('//*[@id="login-password"]')
-q.set("GlassBowl")
-button = session.at_xpath('//*[@name="submit"]')
-button.click()
+new_session()
+LAST_RESET = datetime.now()
+
+def new_session():
+    global session
+    session = dryscrape.Session()
+    # Get George set up
+    session.visit("https://www.linkedin.com")
+    # log in
+    q = session.at_xpath('//*[@id="login-email"]')
+    q.set('george@sandhill.exchange')
+    q = session.at_xpath('//*[@id="login-password"]')
+    q.set("GlassBowl")
+    button = session.at_xpath('//*[@name="submit"]')
+    button.click()
 
 
 boxes =['background-summary-container','background-experience-container',
@@ -29,6 +36,8 @@ def pull_profile(url):
         session.visit(url)
     except:
         logger.info("ERROR! Access denied.")
+        if LAST_RESET + timedelta(hours=1) < datetime.now():
+            new_session()
         return None, None
     content = ""
     name_div = session.at_xpath('//span[@class="full-name"]')
