@@ -156,7 +156,7 @@
 							<div id="sendmessage">
 								 Your message has been sent. Thank you!
 							</div>
-							<form action="contact/contact.php" method="post" role="form" class="contactForm">
+							<form role="form" class="contactForm">
 							  <div class="form-group">
 								<label for="name">Your Name</label>
 								<input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="maxlen:4" data-msg="Please enter at least 4 chars" />
@@ -177,8 +177,11 @@
 								<textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us"></textarea>
 								<div class="validation"></div>
 							  </div>
-							  
-							  <button type="submit" class="btn btn-theme pull-left">NOTHING WILL HAPPEN</button>
+							  <div class="form-group">
+							  <button type="submit" class="btn btn-theme pull-left">NOTHING WILL HAPPEN</button></div>
+                              <div class="form-group">
+                              <p>Yeah I was too lazy to set up this form. If you have questions or the site isn't working, <a href="mailto:elaine.ou@gmail.com">email me</a> or tweet <a href="http://twitter.com/eiaine">@eiaine</a>.</p>
+                            </div>
 							</form>
 
 						</div>
