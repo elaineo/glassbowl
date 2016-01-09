@@ -22,11 +22,7 @@ def open_file(name):
     with open(os.path.join(APP_DATA, name)) as f:
         f.read()
 
-def search_query(url):
-    logger.info(url)
-    data, name = pull_profile(url)
-    if not data or not name:
-        return {'status': "error"}
+def search_text(data):
     documents, dictionary, lsi, index = load_docs('linkedin',APP_DATA)
 
     sims = query_docs(data, dictionary, lsi, index)
@@ -49,11 +45,19 @@ def search_query(url):
     min_sal, max_sal, avg_sal = calc_salary([r['Salary'] for r in jobs])
     results = {}
     results['status'] = "ok"
-    results['li_name'] = name
     results['jobs'] = jobs
     results['max_salary'] = '$' + locale.format("%d", max_sal, grouping=True) 
     results['min_salary'] = '$' + locale.format("%d", min_sal, grouping=True) 
     results['ave_salary'] = '$' + locale.format("%d", avg_sal, grouping=True) 
+    return results
+
+def search_query(url):
+    logger.info(url)
+    data, name = pull_profile(url)
+    if not data or not name:
+        return {'status': "error"}
+    results = search_text(data)
+    results['li_name'] = name
     return results
 
 def calc_salary(salarylist):

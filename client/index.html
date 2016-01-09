@@ -54,7 +54,14 @@
         <input  id="inputurl" class="form-control" type = "text" name="linkedin_url" placeholder = "Linkedin URL - eg. https://www.linkedin.com/in/elaineo">
         <button href="#services" class="form-control button" id="search_btn" type="submit">Go!</button>
         <br><span id="wait_text"></span>
-        </form>
+        </form><br>
+        <p><a style="color:#fff;text-decoration:underline" href="#" id="linkedin_fix">If you are getting LinkedIn errors, click here to just submit your profile as plain text.</a></p>
+         <form method="post" id="input_form" style="display:none" action="/send_text">
+        <textarea  id="inputtext" class="form-control" type="text" rows=8>
+            Paste the text of your LinkedIn profile here.
+        </textarea>
+        <button href="#services" class="form-control button" id="input_btn" type="submit">Go!</button>
+        </form><br>
 						</div>
 					</div>
 				</div>
@@ -211,6 +218,53 @@
 <script>
 
 $(document).ready(function () {
+    $("#linkedin_fix").click(function() {
+        $("#input_form").toggle();
+    })
+    $("#input_btn").click(function getresponse(e){
+        e.preventDefault();
+        $("#input_btn").attr('disabled', 'disabled');
+        $("#input_btn").addClass('wait');
+        var text = $("#inputtext").val();
+        var jdata = JSON.stringify({'text': text});
+        $("#inputtext").val("");
+        window.location.hash='';
+        $("#ave_sal").html("");
+          $.ajax({
+            type: 'POST',
+            url: '/send_text',
+            dataType: "json",
+            contentType: "json/application",
+            data: jdata,
+            crossDomain: true,
+            success:    function (res) {
+                 $('#input_btn').removeAttr('disabled');
+                $('#input_btn').removeClass('wait');   
+                window.location.hash = "services";
+                if (res.status == "error") {
+                    alert("Oops! LinkedIn error. Please check your url.");
+                    return
+                }
+                $("#linkedin_name").html('<a href="' + url + '">' + res.li_name + '</a>');
+                $("#stage").html("");
+                $("#ave_sal").html("<h4>How are they doing?</h4><h5><b>min</b>: " + res.min_salary+" | <b>max</b>: "+res.max_salary+" | <b>average</b>: "+res.ave_salary+"</h5>");
+                    
+                    $("#stage").append("<tr><th>Position</th><th>Employer</th><th>Salary</th></tr>");
+
+                    json = res.jobs;
+                    for (var i = 0; i < json.length; i++) {
+                        $("#stage").append("<tr>",
+                            "<td>" + json[i].Title, "<td>" + json[i].Company,
+                            '<td align="right">' + json[i].Salary)
+                    };
+                    
+                },
+            error: function (request, status, error) {
+                alert(error);
+            }
+        });
+    });
+
     $("#search_btn").click(function getresponse(e){
         e.preventDefault();
         $("#search_btn").attr('disabled', 'disabled');

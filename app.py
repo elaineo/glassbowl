@@ -40,7 +40,19 @@ def search():
     
 LI_ACCESS_URL = "https://www.linkedin.com/uas/oauth2/accessToken"
 
-
+@app.route('/send_text', methods=['GET', 'POST'])
+def send_text():
+    data = request.data
+    try:
+        data = json.loads(data)
+    except:
+        return json.dumps({'status': "error"})
+    text = data.get('text')    
+    if text:
+        r = search_text(text)
+        return json.dumps(r)
+    else:
+        return json.dumps({'status': "error"})
 
 if __name__ == '__main__':
     app.run(threaded=True)
