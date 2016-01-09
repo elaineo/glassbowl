@@ -245,7 +245,7 @@ $(document).ready(function () {
                 $('#input_btn').removeClass('wait');   
                 window.location.hash = "services";
                 if (res.status == "error") {
-                    alert("Oops! LinkedIn error. Please check your url. \n\nPlease note: International LinkedIn urls currently not supported. ie, instead of jp.linkedin.com or in.linkedin.com, use www.linkedin.com");
+                    alert("Oops! Search error. Try submitting less text.");
                     return
                 }
                 $("#stage").html("");
@@ -293,7 +293,7 @@ $(document).ready(function () {
                 $("#wait_text").html("");
                 window.location.hash = "services";
                 if (res.status == "error") {
-                    alert("Oops! LinkedIn error. Please check your url.");
+                    alert("Oops! LinkedIn error. Please check your url. \n\nPlease note: International LinkedIn urls currently not supported. ie, instead of jp.linkedin.com or in.linkedin.com, use www.linkedin.com");
                     return
                 }
                 $("#linkedin_name").html('<a href="' + url + '">' + res.li_name + '</a>');
