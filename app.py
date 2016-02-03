@@ -33,7 +33,10 @@ def search():
         return json.dumps({'status': "error"})
     url = data.get('url')
     if url:
-        r = search_query(url.strip())
+        clean_url = url.strip()
+        if clean_url[:5] = "http:":
+            clean_url = "https:" + clean_url[5:]
+        r = search_query(clean_url)
         return json.dumps(r)
     else:
         return json.dumps({'status': "error"})
