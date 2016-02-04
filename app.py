@@ -34,7 +34,7 @@ def search():
     url = data.get('url')
     if url:
         clean_url = url.strip()
-        if clean_url[:5] == "http:":
+        if clean_url.startswith("http:"):
             clean_url = "https:" + clean_url[5:]
         r = search_query(clean_url)
         return json.dumps(r)
